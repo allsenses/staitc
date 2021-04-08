@@ -2,7 +2,7 @@ var require=function(src,callback){
 	callback=callback || function(){};
 	if(src.constructor===Array){
 		var module=document.createElement("script");
-		module.src=require.baseURL+src[0]+".js";
+		module.src=require.baseURL+src[0]+"min.js";
 		module.type="text/javascript";
 		module.async=true;
 		module.addEventListener("load",function(){
