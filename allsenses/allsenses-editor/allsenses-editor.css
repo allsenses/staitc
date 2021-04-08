@@ -1,0 +1,273 @@
+.allsenses-editor{
+	text-align: center;
+	word-wrap: break-word;
+}
+
+.allsenses-editor .container{
+	text-align: left;
+}
+
+.allsenses-editor .tools{
+	opacity: 0;
+	visibility: hidden;
+	position: absolute;
+	padding: 1rem;
+	margin:.5rem 0;
+	background: #fff;
+	-webkit-box-shadow:0 4px 16px rgba(0,0,0,.1);
+	border-radius: 16px;
+	width: 320px;
+	-webkit-transition: opacity .2s, visibility .2s;
+	z-index: 10;
+}
+
+.allsenses-editor .tools.active{
+	opacity: 1;
+	visibility: visible;
+}
+
+.allsenses-editor .tools .tool{
+	display: inline-block;
+	padding: .75rem 0;
+	width: 75px;
+	margin: 8px;
+	-webkit-box-shadow:0 4px 16px rgba(0,0,0,.1);
+	border-radius: 16px;
+	color:#2ba6cb;
+}
+
+.allsenses-editor .tools .tool:hover{
+	background:#2ba6cb;
+	color:#fff;
+}
+
+.allsenses-editor .tools .tool i{
+	display: block;
+	font-size:36px;
+}
+
+
+.allsenses-editor .edit{
+	visibility: hidden;
+	opacity: 0;
+	display: inline-block;
+	position: absolute;
+	-webkit-transition: opacity .2s, visibility .2s;
+}
+
+.allsenses-editor .edit a{
+	width: 32px;
+	height: 32px;
+	color:#fff;
+	line-height: 32px;
+	background: #2ba6cb;
+}
+
+.allsenses-editor .edit > a:hover + .options{
+	visibility: visible;
+	opacity: 1;
+}
+
+.allsenses-editor .edit .options:hover{
+	visibility: visible;
+	opacity: 1;
+}
+
+.allsenses-editor .edit .options{
+	visibility: hidden;
+	opacity: 0;
+	float: left;
+	-webkit-transition:.2s;
+}
+
+.allsenses-editor .edit .options a{
+	display: inline-block;
+	background: #aaaaaa;
+	color:#fff;
+}
+
+.allsenses-editor .edit.active{
+	visibility: visible;
+	opacity: 1;
+}
+
+.allsenses-editor .edit.active{
+	opacity: 1;
+	visibility: visible;
+}
+
+.allsenses-editor .add{
+	visibility: visible;
+	opacity: 0.1;
+	position: relative;
+	display: block;
+	width: 32px;
+	height:32px;
+	font-size: 22px;
+	margin:1rem auto;
+	border-radius: 999px;
+	border:2px solid #2ba6cb;
+	background:#fff;
+	color:#2ba6cb;
+	-webkit-box-shadow:0 4px 16px rgba(0,0,0,.1);
+	-webkit-transition:.2s;
+	text-align: center;
+}
+.allsenses-editor [contenteditable=false]:hover > .add{
+	visibility: visible;
+	opacity: 1;
+}
+
+.allsenses-editor iframe{
+	width: 100%;
+	height: 480px;
+}
+
+.allsenses-editor textarea{
+	min-height: 256px;
+}
+
+.allsenses-editor .container [contenteditable=true], .allsenses-editor .container [contenteditable=false][data-container=false],.allsenses-editor .container [data-container=true]{
+	border:1px solid transparent;
+	-webkit-transition:.2s;
+}
+.allsenses-editor .container [contenteditable=true]:hover, .allsenses-editor .container [contenteditable=false][data-container=false]:hover{
+	border:1px solid #2ba6cb;
+}
+
+.allsenses-editor .container [contenteditable=true].active, .allsenses-editor .container [contenteditable=false][data-container=false].active,.allsenses-editor .container [data-container=true].active{
+	border:1px solid #2ba6cb;
+}
+
+.allsenses-editor .add.add-main{
+	visibility: visible;
+	opacity: 1;
+	border:none;
+	background:#2ba6cb;
+	color:#fff;
+}
+
+.allsenses-editor .add i{
+	position: absolute;
+	top:50%;
+	-webkit-transform: translateY(-50%);
+	left:0;
+	right: 0;
+}
+
+.allsenses-editor .popup{
+	visibility: hidden;
+	opacity: 0;
+	padding: 1rem;
+	background: #fff;
+	position: absolute;
+	width: 320px;
+	text-align: center;
+	z-index: 20;
+	-webkit-transition:opacity .2s,visibility .2s;
+	-webkit-box-shadow:0 4px 16px rgba(0,0,0,.25);
+}
+
+.allsenses-editor .popup input{
+	margin:0;
+}
+
+.allsenses-editor .popup button{
+	display: block;
+	border:none;
+	background: #2ba6cb;
+	color:#fff;
+	width: 100%;
+	padding: .75rem 1.5rem;
+	margin-top:1rem;
+	-webkit-transition: .1s;
+	cursor:pointer;
+}
+
+.allsenses-editor .popup button:hover{
+	background: #2eb0d8;
+}
+
+.allsenses-editor .popup button:active{
+	background: #33c1ec;
+}
+
+.allsenses-editor .popup input, .allsenses-editor .popup select{
+	display: inline-block;
+	width: auto;
+}
+
+.allsenses-editor .popup.active{
+	visibility: visible;
+	opacity: 1;
+}
+
+
+.allsenses-editor .toolbox{
+	visibility: hidden;
+	opacity: 0;
+	-webkit-transition:opacity .2s, visibility .2s;
+	position: absolute;
+	top:0;
+	left:0;
+	background: #d8d8d8;
+	z-index: 10;
+	-webkit-box-shadow:0 4px 8px rgba(0,0,0,.15);
+}
+
+.allsenses-editor .toolbox.active{
+	visibility: visible;
+	opacity: 1;
+}
+
+.allsenses-editor .toolbox button{
+	display: inline-block;
+	color:#000;
+	height: 32px;
+	width: 32px;
+	cursor:default;
+	vertical-align: middle;
+}
+
+.allsenses-editor .toolbox button:hover{
+	background: rgba(0,0,0,.1);
+}
+
+.allsenses-editor .toolbox hr{
+	display: inline-block;
+	margin:0;
+	height: 16px;
+	border:none;
+	width: 1px;
+	background: rgba(0,0,0,.2);
+	vertical-align: middle;
+}
+
+.allsenses-editor .toolbox button.active{
+	background: rgba(0,0,0,.18);
+}
+
+.allsenses-editor .selection{
+	color:#fff;
+	background: #0078d7;
+}
+
+.allsenses-editor .selection::selection,.allsenses-editor .selection *::selection{
+	color:none;
+	background: transparent;
+}
+
+.allsenses-editor .toolbox button i{
+	display: inline-block;
+	line-height: 32px;
+	text-align: center;
+}
+
+[contenteditable=true][data-placeholder]:empty:before {
+    content: attr(data-placeholder);
+    color: #555; 
+}
+
+[contenteditable=true][data-placeholder]:empty:focus:before {
+    content: "";
+}
