@@ -170,12 +170,14 @@ var engine={
 		currentTarget:null,
 		show:function(event,pos){
 			event.stopPropagation();
+			var scroll=$(".allsenses-editor")[0].getBoundingClientRect();
 			var rect=$(event.currentTarget)[0].getBoundingClientRect();
 			var edit=$(".allsenses-editor .edit")[0].getBoundingClientRect();
-			var x=rect.left+rect.width-edit.width+window.scrollX;
-			var y=rect.top+window.scrollY;
+			var x=rect.left+rect.width-edit.width-scroll.left;
+			var y=rect.top-scroll.top;
+			console.log(scroll.left,rect.left,edit.width)
 			if(pos=="bottom"){
-				y=rect.top+rect.height-edit.height+window.scrollY;
+				y=rect.top+rect.height-edit.height-scroll.top;
 			}
 			$(".allsenses-editor .edit").attr("style","top:"+y+"px;left:"+x+"px");
 			$(".allsenses-editor .edit").addClass("active");
@@ -226,10 +228,11 @@ var engine={
 			$(".allsenses-editor .tools")[0].appendChild(a);
 		},
 		show:function(event){
+			var scroll=$(".allsenses-editor")[0].getBoundingClientRect();
 			var rect=$(event.currentTarget)[0].getBoundingClientRect();
 			var tools=$(".allsenses-editor .tools")[0].getBoundingClientRect();
-			var x=rect.left-tools.width/2+rect.width/2+window.scrollX;
-			var y=rect.top+rect.height+window.scrollY;
+			var x=rect.left-tools.width/2+rect.width/2-scroll.left;
+			var y=rect.top+rect.height-scroll.top;
 			$(".allsenses-editor .tools").addClass("active");
 			$(".allsenses-editor .tools").attr("style","top:"+y+"px;left:"+x+"px")
 			event.preventDefault();
@@ -248,13 +251,15 @@ var engine={
 
 	toolbox:{
 		show:function(obj,options){
+			var scroll=$(".allsenses-editor")[0].getBoundingClientRect();
 			if(obj.type=="contextmenu"){
-				var x=obj.clientX+window.scrollX;
-				var y=obj.clientY-32+window.scrollY;
+				var x=obj.clientX-scroll.left;
+				var y=obj.clientY-32-scroll.top;
 			}else{
 				var rect=obj.getBoundingClientRect();
-				var x=rect.x+window.scrollX;
-				var y=rect.y+window.scrollY-32;
+				var x=rect.x-scroll.left;
+				var y=rect.y-32-scroll.top;
+				console.log();
 			}
 			$(".allsenses-editor .toolbox").attr("style","top:"+y+"px;left:"+x+"px")
 			$(".allsenses-editor .toolbox").html("");
