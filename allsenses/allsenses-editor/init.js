@@ -286,13 +286,20 @@ var engine={
 	toolbox:{
 		show:function(obj,options){
 			var scroll=$(".allsenses-editor")[0].getBoundingClientRect();
+			var toolbox=$(".allsenses-editor .toolbox")[0].getBoundingClientRect();
 			if(obj.type=="contextmenu"){
 				var x=obj.clientX-scroll.left;
-				var y=obj.clientY-32-scroll.top;
+				if(obj.clientX-scroll.left+toolbox.width>scroll.width){
+					x=scroll.width-toolbox.width;
+				}
+				var y=obj.clientY-toolbox.height-scroll.top;
 			}else{
 				var rect=obj.getBoundingClientRect();
 				var x=rect.x-scroll.left;
-				var y=rect.y-32-scroll.top;
+				if(rect.x-scroll.left+toolbox.width>scroll.width){
+					x=rect.x-scroll.left-toolbox.width+rect.width;
+				}
+				var y=rect.y-toolbox.height-scroll.top;
 			}
 			$(".allsenses-editor .toolbox").attr("style","top:"+y+"px;left:"+x+"px")
 			$(".allsenses-editor .toolbox").html("");
