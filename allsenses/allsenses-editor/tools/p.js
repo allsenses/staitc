@@ -228,10 +228,12 @@ var range=null;
 		input.placeholder="Adres odnośnika...";
 		engine.popup.add(input,"center",function(){
 			window.getSelection().addRange(selected);
-			add({
-				command:"createlink",
-				value:input.value
-			});
+			if(input.value!=""){
+				add({
+					command:"createlink",
+					value:input.value
+				});
+			}
 		});
 	}
 

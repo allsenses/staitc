@@ -159,6 +159,18 @@
 	min-height: 256px;
 }
 
+.allsenses-editor [data-icon]{
+	display: inline-block;
+	font-size: 24px;
+	border: 1px solid #000;
+	width: 34px;
+	height: 34px;
+	line-height: 34px;
+	text-align: center;
+	margin: 4px;
+	color:#000;
+}
+
 .allsenses-editor .container [contenteditable=true], .allsenses-editor .container [contenteditable=false][data-container=false],.allsenses-editor .container [data-container=true]{
 	border:1px solid transparent;
 	-webkit-transition:.2s;
