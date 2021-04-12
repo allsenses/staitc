@@ -106,17 +106,17 @@ var engine={
 			});
 
 			if(e.textOptions){
-				$(obj).on("mouseup",function(event){
+				$(obj)[0].addEventListener("mouseup",function(event){
 					event.stopPropagation();
 					var customevent=new CustomEvent("edit-selection",{detail:{object:e,$:obj}});
 					window.dispatchEvent(customevent);
 				},false);
-				$(obj).on("contextmenu",function(event){
+				$(obj)[0].addEventListener("contextmenu",function(event){
 					event.stopPropagation();
 					var customevent=new CustomEvent("edit-selection",{detail:{object:e,$:event}});
 					window.dispatchEvent(customevent);
 				},false);
-				$(obj).on("keydown",function(event){
+				$(obj)[0].addEventListener("keydown",function(event){
 					if(event.key=="Enter" && !event.shiftKey){
 						if(!document.queryCommandState("insertUnorderedList") && !document.queryCommandState("insertOrderedList")){
 							document.execCommand("formatBlock",false,"p");
@@ -128,9 +128,8 @@ var engine={
 				},false);
 			}
 			if(e.editable && !e.textOptions){
-				$(obj).on("paste",function(event){
-					console.log(event);
-					this.innerHTML=event.clipboardData.getData("data");
+				$(obj)[0].addEventListener("paste",function(event){
+					this.innerHTML=event.clipboardData.getData("text/plain");
 					event.preventDefault();
 				},false);
 			}
@@ -292,7 +291,6 @@ var engine={
 				var rect=obj.getBoundingClientRect();
 				var x=rect.x-scroll.left;
 				var y=rect.y-32-scroll.top;
-				console.log();
 			}
 			$(".allsenses-editor .toolbox").attr("style","top:"+y+"px;left:"+x+"px")
 			$(".allsenses-editor .toolbox").html("");
