@@ -4,6 +4,7 @@
 		this.type="h4";
 		this.class="text-left";
 		this.placeholder="Sample text...";
+		this.draggable=true;
 	}
 	var tool=function(){
 		engine.add.object(new h4());

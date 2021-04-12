@@ -1,6 +1,7 @@
 var engine={
 	data:[],
 	target:null,
+	draggable:null,
 	init:function(container){
 		var div=document.createElement("div");
 		div.className="allsenses-editor";
@@ -14,15 +15,21 @@ var engine={
 		div.appendChild(a);
 		$(container)[0].appendChild(div);
 
-		$(".allsenses-editor .edit .options").html('<a class="edit-up fal fa-angle-up"></a><a class="edit-down fal fa-angle-down"></a><a class="remove fal fa-trash"></a>');
+		$(".allsenses-editor .edit .options").html('<a class="drag fal fa-arrows" draggable="true"></a><a class="edit-up fal fa-angle-up"></a><a class="edit-down fal fa-angle-down"></a><a class="remove fal fa-trash"></a>');
 
 		$(".allsenses-editor .edit").on("mousemove",function(){
 			$(this).addClass("active");
+			if(engine.edit.target.draggable){
+				$(".allsenses-editor .drag").addClass("active");
+			}else{
+				$(".allsenses-editor .drag").removeClass("active");
+			}
 			engine.edit.target.focus=true;
 			$(engine.edit.currentTarget).addClass("active");
 		});
 		$(".allsenses-editor .edit").on("mouseleave",function(){
 			$(this).removeClass("active");
+			$(".allsenses-editor .drag").removeClass("active");
 			engine.edit.target.focus=false;
 			$(engine.edit.currentTarget).removeClass("active");
 		});
@@ -30,6 +37,15 @@ var engine={
 		$(".allsenses-editor .edit a.remove").on("click",engine.edit.remove);
 		$(".allsenses-editor .edit a.edit-up").on("click",engine.edit.up);
 		$(".allsenses-editor .edit a.edit-down").on("click",engine.edit.down);
+		$(".allsenses-editor .edit a.drag").on("dragstart",function(event){
+			if(engine.edit.target.draggable){
+				$(".allsenses-editor .add").addClass("active");
+				engine.draggable=engine.edit.target;
+			}
+		});
+		$(".allsenses-editor .edit a.drag").on("dragend",function(event){
+				$(".allsenses-editor .add").removeClass("active");
+		});
 		$(window).on("click",engine.tools.hide);
 		require(modules);
 		engine.clear();
@@ -87,19 +103,20 @@ var engine={
 				if(!e.textOptions){
 					engine.toolbox.hide();
 				}
-			})
+			});
+
 			if(e.textOptions){
-				$(obj)[0].addEventListener("mouseup",function(event){
+				$(obj).on("mouseup",function(event){
 					event.stopPropagation();
 					var customevent=new CustomEvent("edit-selection",{detail:{object:e,$:obj}});
 					window.dispatchEvent(customevent);
 				},false);
-				$(obj)[0].addEventListener("contextmenu",function(event){
+				$(obj).on("contextmenu",function(event){
 					event.stopPropagation();
 					var customevent=new CustomEvent("edit-selection",{detail:{object:e,$:event}});
 					window.dispatchEvent(customevent);
 				},false);
-				$(obj)[0].addEventListener("keydown",function(event){
+				$(obj).on("keydown",function(event){
 					if(event.key=="Enter" && !event.shiftKey){
 						if(!document.queryCommandState("insertUnorderedList") && !document.queryCommandState("insertOrderedList")){
 							document.execCommand("formatBlock",false,"p");
@@ -111,9 +128,9 @@ var engine={
 				},false);
 			}
 			if(e.editable && !e.textOptions){
-				$(obj)[0].addEventListener("paste",function(event){
+				$(obj).on("paste",function(event){
 					console.log(event);
-					this.innerHTML=event.clipboardData.getData('text/plain');
+					this.innerHTML=event.clipboardData.getData("data");
 					event.preventDefault();
 				},false);
 			}
@@ -125,6 +142,23 @@ var engine={
 				a.innerHTML='<i class="fas fa-plus"></i>';
 				a.engineTarget=e;
 				$(a).on("click",engine.tools.show);
+				$(a).on("drop",function(event){
+					event.preventDefault();
+					var data=engine.draggable;
+					if(data){
+						for(var i=0;i<data.parent.length;i++){
+							if(data.parent[i]===data){
+								data.parent.splice(i,1);
+							}
+						}
+						this.engineTarget.content.push(data);
+						engine.draggable=null;
+						engine.clear();
+					}
+				})
+				$(a).on("dragover",function(event){
+					event.preventDefault();
+				});
 				obj.appendChild(a);
 			}
 			$(container)[0].appendChild(obj);
@@ -173,13 +207,12 @@ var engine={
 			var scroll=$(".allsenses-editor")[0].getBoundingClientRect();
 			var rect=$(event.currentTarget)[0].getBoundingClientRect();
 			var edit=$(".allsenses-editor .edit")[0].getBoundingClientRect();
-			var x=rect.left+rect.width-edit.width-scroll.left;
+			var x=scroll.right-rect.right;
 			var y=rect.top-scroll.top;
-			console.log(scroll.left,rect.left,edit.width)
 			if(pos=="bottom"){
 				y=rect.top+rect.height-edit.height-scroll.top;
 			}
-			$(".allsenses-editor .edit").attr("style","top:"+y+"px;left:"+x+"px");
+			$(".allsenses-editor .edit").attr("style","top:"+y+"px;right:"+x+"px");
 			$(".allsenses-editor .edit").addClass("active");
 			engine.edit.target=event.currentTarget.engineTarget;
 			engine.edit.currentTarget=event.currentTarget;
@@ -295,13 +328,14 @@ var engine={
 			if(pos=="center"){
 				$(".allsenses-editor .popup").attr("style","position:fixed;top:50%;left:50%;-webkit-transform:translate(-50%,-50%);width:auto;overflow:auto;height:auto;max-height:70%");
 			}else{
+				var scroll=$(".allsenses-editor")[0].getBoundingClientRect();
 				var rect=$(".allsenses-editor .edit")[0].getBoundingClientRect();
 				var popup=$(".allsenses-editor .popup")[0].getBoundingClientRect();
-				var x=rect.left-popup.width/2+rect.width/2+window.scrollX;
-				if(window.innerWidth<x+popup.width){
-					x=window.innerWidth-popup.width-20;
+				var x=rect.left-popup.width/2+rect.width/2-scroll.left;
+				if(scroll.width<x+popup.width){
+					x=scroll.width-popup.width-20;
 				}
-				var y=rect.top+rect.height+window.scrollY;
+				var y=rect.top+rect.height-scroll.top;
 				$(".allsenses-editor .popup").attr("style","top:"+y+"px;left:"+x+"px")
 			}
 			$(".allsenses-editor .popup").addClass("active");
@@ -338,6 +372,7 @@ var engine={
 			this.container=false;
 			this.textOptions=false;
 			this.spellcheck=false;
+			this.draggable=false;
 		}
 	}
 }

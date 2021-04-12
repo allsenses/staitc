@@ -5,6 +5,7 @@ var range=null;
 		this.type="div";
 		this.placeholder="Sample text...";
 		this.textOptions=true;
+		this.draggable=true;
 	}
 	var tool=function(){
 		engine.add.object(new p());

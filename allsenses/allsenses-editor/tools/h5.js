@@ -3,6 +3,7 @@
 		engine.model.tool.call(this);
 		this.type="h5";
 		this.placeholder="Sample text...";
+		this.draggable=true;
 	}
 	var tool=function(){
 		engine.add.object(new h5());

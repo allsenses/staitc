@@ -2,7 +2,7 @@
 	var grid=function(){
 		engine.model.tool.call(this);
 		this.type="div";
-		this.class="grid-x grid-margin-x grid-margin-y";
+		this.class="grid-x grid-padding-x grid-padding-y";
 		this.editable=false;
 	}
 	var cell=function(){
@@ -55,6 +55,9 @@
 					resize()
 				}
 				if(target.content.length>val){
+					target.content[val].content.forEach(function(e){
+						target.content[val-1].content.push(e);
+					});
 					target.content.splice(val,target.content.length);
 					resize()
 				}

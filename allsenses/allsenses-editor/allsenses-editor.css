@@ -2,10 +2,24 @@
 	position: relative;
 	text-align: center;
 	word-wrap: break-word;
+	margin-top:12rem;
+	margin-left:12rem;
+	
 }
 
 .allsenses-editor .container{
 	text-align: left;
+}
+
+.allsenses-editor .container .grid-x{
+	padding:.5rem;
+	background: rgba(0,0,0,.025);
+	border-radius: 8px;
+}
+
+.allsenses-editor .container .cell{
+	background: rgba(0,0,0,.025);
+	border-radius: 8px;
 }
 
 .allsenses-editor .tools{
@@ -51,11 +65,21 @@
 .allsenses-editor .edit{
 	visibility: hidden;
 	opacity: 0;
-	display: inline-block;
+	display: -webkit-flex;
 	position: absolute;
 	-webkit-transition: opacity .2s, visibility .2s;
-	width: 128px;
+	white-space: nowrap;
 }
+
+.allsenses-editor .edit .options a.drag{
+	display: none;
+}
+
+.allsenses-editor .edit .options a.drag.active{
+	display: inline-block;
+}
+
+
 
 .allsenses-editor .edit a{
 	width: 32px;
@@ -63,6 +87,7 @@
 	color:#fff;
 	line-height: 32px;
 	background: #2ba6cb;
+	order:1;
 }
 
 .allsenses-editor .edit > a:hover + .options{
@@ -78,7 +103,6 @@
 .allsenses-editor .edit .options{
 	visibility: hidden;
 	opacity: 0;
-	float: left;
 	-webkit-transition:.2s;
 }
 
@@ -115,6 +139,14 @@
 	-webkit-transition:.2s;
 	text-align: center;
 }
+
+.allsenses-editor .add.active{
+	border:2px solid #46cb2b;
+	background:#fff;
+	color:#46cb2b;
+	opacity: .8;
+}
+
 .allsenses-editor [contenteditable=false]:hover > .add{
 	visibility: visible;
 	opacity: 1;
