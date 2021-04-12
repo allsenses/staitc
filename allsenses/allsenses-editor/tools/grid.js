@@ -2,7 +2,7 @@
 	var grid=function(){
 		engine.model.tool.call(this);
 		this.type="div";
-		this.class="grid-x grid-padding-x grid-padding-y";
+		this.class="grid-x grid-margin-x grid-padding-y";
 		this.editable=false;
 	}
 	var cell=function(){

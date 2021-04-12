@@ -72,6 +72,7 @@ var engine={
 			var obj=document.createElement(e.type);
 			obj.engineTarget=e;
 			obj.className=e.class;
+			obj.alt=e.alt;
 			obj.src=e.src;
 			obj.textOptions=e.textOptions;
 			if(e.focus){
@@ -186,6 +187,7 @@ var engine={
 			var obj=document.createElement(e.type);
 			obj.engineTarget=e;
 			obj.className=e.class;
+			obj.alt=e.alt;
 			obj.src=e.src;
 			if(!e.container && e.editable){
 				obj.innerHTML=e.text || "";
@@ -371,6 +373,7 @@ var engine={
 			this.textOptions=false;
 			this.spellcheck=false;
 			this.draggable=false;
+			this.alt=null;
 		}
 	}
 }

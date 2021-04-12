@@ -67,6 +67,7 @@
 	position: absolute;
 	-webkit-transition: opacity .2s, visibility .2s;
 	white-space: nowrap;
+	z-index: 1;
 }
 
 .allsenses-editor .edit .options a.drag{

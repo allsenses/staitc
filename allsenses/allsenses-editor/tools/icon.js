@@ -21,6 +21,7 @@
 			var data=this.getAttribute("data-icon");
 			engine.add.object(new icon(data));
 			engine.popup.hide();
+			$(".allsenses-editor .popup").html("");
 		})
 		engine.popup.add(section,"center")
 	}
