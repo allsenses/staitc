@@ -224,7 +224,9 @@ var engine={
 		},
 		remove:function(){
 			engine.clear();
-			engine.edit.target.parent.splice(engine.edit.target.id,1);
+			if(confirm("Usunąć obiekt?")){
+				engine.edit.target.parent.splice(engine.edit.target.id,1);
+			}
 			engine.clear();
 		},
 		up:function(){

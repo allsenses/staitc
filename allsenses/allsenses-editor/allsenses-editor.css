@@ -78,6 +78,9 @@
 	display: inline-block;
 }
 
+.allsenses-editor hr{
+	border:2px solid #000;
+}
 
 
 .allsenses-editor .edit a{
@@ -173,15 +176,15 @@
 }
 
 .allsenses-editor .container [contenteditable=true], .allsenses-editor .container [contenteditable=false][data-container=false],.allsenses-editor .container [data-container=true]{
-	border:1px solid transparent;
+	outline:1px solid transparent;
 	-webkit-transition:.2s;
 }
 .allsenses-editor .container [contenteditable=true]:hover, .allsenses-editor .container [contenteditable=false][data-container=false]:hover{
-	border:1px solid #2ba6cb;
+	outline:1px solid #2ba6cb;
 }
 
 .allsenses-editor .container [contenteditable=true].active, .allsenses-editor .container [contenteditable=false][data-container=false].active,.allsenses-editor .container [data-container=true].active{
-	border:1px solid #2ba6cb;
+	outline:1px solid #2ba6cb;
 }
 
 .allsenses-editor .add.add-main{
