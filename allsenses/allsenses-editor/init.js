@@ -128,7 +128,7 @@ var engine={
 					}
 				},false);
 			}
-			if(e.editable && !e.textOptions){
+			if(e.editable && e.textOptions){
 				$(obj)[0].addEventListener("paste",function(event){
 					this.innerHTML=event.clipboardData.getData("text/plain");
 					event.preventDefault();
