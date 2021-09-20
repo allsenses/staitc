@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 *{
 	-webkit-box-sizing: border-box;
 }
@@ -7,8 +8,12 @@
 	--panel-text:#d3d3d3;
 	--panel-cat:#1a2331;
 	--panel-object:#293444;
+	--panel-input:#192231;
 }
 
+body{
+	font-family: "Roboto";
+}
 
 .main-slider .item{
 	height: 100vh;
@@ -53,8 +58,13 @@
 	cursor: pointer;
 }
 
+.allsenses-slider .panel .options a:hover{
+	background:rgba(255,255,255,.05);
+}
+
 .allsenses-slider .panel [data-tab]{
 	display: none;
+	padding: .5rem;
 }
 
 .allsenses-slider .panel [data-tab].active{
@@ -64,7 +74,7 @@
 .allsenses-slider .panel [data-tab] .tool{
 	display: inline-block;
 	padding: 0.75rem 0;
-	width: calc(33.33% - 26px);
+	width: calc(50% - 26px);
 	min-height: 82px;
 	margin: 13px 13px;
 	border-radius: 4px;
@@ -104,6 +114,14 @@
 	font-size:20px;
 }
 
+.allsenses-slider .button{
+	display: inline-block;
+	background: rgba(255,255,255,.05);
+	padding: .75rem 1.25rem;
+	border-radius: 4px;
+	color: var(--panel-text);
+}
+
 .allsenses-slider .content{
 	position: fixed;
 	top:0;
@@ -120,4 +138,52 @@
 	width: 100%;
 	height: 100%;
 	border: none;
+}
+
+.allsenses-slider input, .allsenses-slider select {
+    background: var(--panel-input);
+    color: var(--panel-text);
+    border: none;
+    font-family: "Roboto";
+    -webkit-box-shadow: none;
+    margin: 0;
+        margin-top: 0px;
+    margin-top: .5rem;
+    padding: .5rem .5rem;
+    height: auto;
+    appearance: auto;
+    width: 100%;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.allsenses-slider input:focus-visible{
+	background: #182125;
+	-webkit-box-shadow:none;
+	border: none;
+	outline: none;
+}
+
+.allsenses-slider label{
+	display: block;
+	height: 32px;
+	line-height: 32px;
+	position: relative;
+	color: var(--panel-text);
+	margin: 4px 0;
+	font-size: 12px;
+}
+
+.allsenses-slider label input, .allsenses-slider label select {
+    display: inline-block;
+    width: 160px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+}
+
+
+.text-center{
+	text-align: center;
 }
