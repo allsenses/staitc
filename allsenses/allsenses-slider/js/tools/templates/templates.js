@@ -10,6 +10,15 @@ import { engine } from "../../init.js";
 		}
 	}
 
+	class Text extends engine.model.tool{
+		constructor(){
+			super();
+			this.module="text";
+			this.type="p";
+			this.text="Sample text";
+		}
+	}
+
 	class Container extends engine.model.tool{
 		constructor(){
 			super();
@@ -58,10 +67,28 @@ import { engine } from "../../init.js";
 			this.content=[
 				new Grid([
 					new Cell([
-						new Heading()
+						new Heading(),
+						new Image()
 					]),
 					new Cell([
-						new Heading()
+						new Text()
+					])
+				])
+			];
+		}
+	}
+
+	class Template2 extends Container{
+		constructor(){
+			super();
+			this.content=[
+				new Grid([
+					new Cell([
+						new Heading(),
+						new Text()
+					]),
+					new Cell([
+						new Image()
 					])
 				])
 			];
@@ -71,4 +98,5 @@ import { engine } from "../../init.js";
 	
 	
 	engine.add.tab("tools").tool("fal fa-image","Template 1",Template);
+	engine.add.tab("tools").tool("fal fa-image","Template 2",Template2);
 })();

@@ -162,6 +162,7 @@ const engine={
 			var obj=document.createElement(e.type);
 			obj.className=e.class
 			obj.innerHTML=e.text;
+			obj.src=e.src;
 			obj.contentEditable=e.editable || false;
 			if(e.editable){
 				$(obj).on("input",function(){
@@ -336,7 +337,7 @@ const engine={
 				this.class="";
 				this.text="";
 				this.src="";
-				this.placeholder="";
+				this.placeholder="Sample text";
 				this.content=[];
 				this.editable=true;
 				this.container=false;
