@@ -17,10 +17,25 @@
 // })
 
 import { lang } from "./modules/lang.js";
+import { Laptop, Mobile } from "./modules/preview.js";
 
 const helper={
 	slides:function(){
 		engine.remove.tab("slides").content();
+
+		if(engine.data[engine.slide]){
+			var input=engine.add.tab("slides").input("Slide title:","text",engine.data[engine.slide].name);
+			$(input).on("input",function(){
+				engine.data[engine.slide].name=this.value;
+			});
+	
+			var input=engine.add.tab("slides").input("Background:","text",engine.data[engine.slide].background);
+			$(input).on("change",function(){
+				engine.data[engine.slide].background=this.value;
+				engine.clear();
+			});
+		};
+
 		engine.add.tab("slides").button("Add slide",function(){
 			engine.data.push({
 				type:"slide",
@@ -36,6 +51,7 @@ const helper={
 			engine.add.tab("slides").slide(e.name,function(){
 				engine.slide=j;
 				engine.clear();
+				helper.slides();
 			},function(){
 				engine.data.splice(j,1);
 				helper.slides();
@@ -44,49 +60,27 @@ const helper={
 			i++;
 		})
 	},
-	slide_settings:function(){
-		engine.remove.tab("slide-settings").content();
-		if(!engine.data[engine.slide]) return false;
-		var input=engine.add.tab("slide-settings").input("Slide title:","text",engine.data[engine.slide].name);
-		$(input).on("input",function(){
-			engine.data[engine.slide].name=this.value;
-		});
-		var input=engine.add.tab("slide-settings").input("Background:","text",engine.data[engine.slide].background);
-		$(input).on("change",function(){
-			engine.data[engine.slide].background=this.value;
-			engine.clear();
-		});
-	}
 }
 
 const engine={
+	settings:{
+		loop:true,
+		autoplay:true,
+		animateOut:"fade-out",
+		margin:0,
+		nav:false,
+		dots:false,
+		items:1,
+		center:true,
+		autoplaySpeed:2000
+	},
 	iframe:null,
 	slide:0,
-	data:[
-		{
-			type:"slide",
-			name:"First",
-			background:"back.webp",
-			content:[
-				{type:"h1",text:"Sample text",editable:true,class:"fade-right",content:[]},
-				{type:"h2",text:"Sample text",editable:true,class:"fade-right",content:[]}
-			]
-		},
-		{
-			type:"slide",
-			name:"Second",
-			background:"back.png",
-			content:[
-				{type:"div",text:"",editable:true,class:"fade-right",content:[
-					{type:"div",text:"",editable:true,class:"fade-right",content:[]}
-				]},
-			]
-		}
-	],
+	data:[],
 	init:function(container,tools){
 		var editor=document.createElement("div");
 		editor.className="allsenses-slider";
-		editor.innerHTML='<div class="panel active"><div class="options"></div><div class="tools"></div><div class="properties"></div></div><div class="content active"></div>';
+		editor.innerHTML='<div class="panel active"><div class="options"></div><div class="tools"></div><div class="bar"></div></div><div class="content active"></div>';
 		$(container).append(editor);
 		var iframeElem=document.createElement("iframe");
 		iframeElem.width="100%";
@@ -102,8 +96,9 @@ const engine={
 			engine.add.iframe.style("css/app.css");
 			engine.add.iframe.style("css/fontawesome/css/all.min.css");
 			engine.add.iframe.style("css/slider.css");
-			engine.add.iframe.script("js/jquery.js");
-			engine.clear();
+			engine.add.iframe.script("js/jquery.js",function(){
+				engine.add.iframe.script("js/owl/owl.carousel.min.js");
+			});
 		});
 		engine.iframe.location.reload();
 		iframe[0].src="";
@@ -111,7 +106,10 @@ const engine={
 		
 		engine.add.panel.option("fal fa-puzzle-piece","tools",true);
 		engine.add.panel.option("fal fa-presentation","slides",false,helper.slides);
-		engine.add.panel.option("fal fa-cogs","slide-settings",false,helper.slide_settings);
+
+		engine.add.bar("fal fa-laptop",Laptop);
+		engine.add.bar("fal fa-tablet",);
+		engine.add.bar("fal fa-mobile",Mobile);
 		
 		engine.load.tools(tools);
 	},
@@ -174,6 +172,53 @@ const engine={
 			$(container).append(obj);
 		});
 	},
+
+	preview:function(){
+		engine.iframe.document.body.innerHTML=engine.get.HTML();
+		engine.iframe.$(".owl-carousel").owlCarousel({
+			loop:true,
+			autoplay:true,
+			animateOut:"fadeOut",
+			margin:0,
+			nav:false,
+			dots:false,
+			items:1,
+			center:true,
+			autoplaySpeed:1000
+		});
+	},
+
+
+	get:{
+		JSON:function(){
+
+		},
+		HTML:function(data,container){
+			data=data || engine.data;
+			if(data==engine.data){
+				container=document.createElement("div");
+				container.className="owl-carousel owl-theme";
+			}
+			data.forEach(function(e){
+				if(e.type=="slide"){
+					var obj=document.createElement("div");
+					obj.className="item";
+					$(obj).attr("style","background-image:url("+e.background+")");
+				}else{
+					var obj=document.createElement(e.type);
+					obj.className=e.class;
+					obj.innerHTML=e.text;
+					obj.src=e.src;
+				}
+				
+				engine.get.HTML(e.content,obj);
+				container.appendChild(obj);
+			});
+			if(data==engine.data){
+				return container.outerHTML;
+			}
+		}
+	},
 	
 	remove:{
 		tab:function(tabName){
@@ -190,10 +235,11 @@ const engine={
 	
 	add:{
 		iframe:{
-			script:function(src){
+			script:function(src,callback){
 				var script=document.createElement("script");
 				script.src=src;
 				engine.iframe.document.head.appendChild(script);
+				$(script).on("load",callback);
 			},
 			style:function(src){
 				var link=document.createElement("link");
@@ -268,7 +314,7 @@ const engine={
 				div.className="text-center";
 				var button=document.createElement("a");
 				button.className="button";
-				button.innerHTML=title;
+				button.innerHTML=lang.translate(title);
 				$(button).on("click",click);
 				div.appendChild(button)
 				self.target.append(div);
@@ -320,6 +366,15 @@ const engine={
 			}
 			
 			return self;
+		},
+
+		bar:function(icon,click){
+			icon=icon || "fal fa-cog";
+			click=click || null;
+			var a=document.createElement("a");
+			a.innerHTML='<i class="'+icon+'"></i>';
+			$(a).on("click",click);
+			$(".allsenses-slider .panel .bar").append(a);
 		},
 		
 		content:function(instance){
