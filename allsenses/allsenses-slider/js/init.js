@@ -17,9 +17,9 @@
 // })
 
 import { lang } from "./modules/lang.js";
-import { Laptop, Mobile } from "./modules/preview.js";
+import { Laptop, Mobile, Tablet } from "./modules/preview.js";
 
-const helper={
+const view={
 	slides:function(){
 		engine.remove.tab("slides").content();
 
@@ -43,7 +43,7 @@ const helper={
 				background:"",
 				content:[]
 			});
-			helper.slides();
+			view.slides();
 		});
 		let i=0;
 		engine.data.forEach(function(e){
@@ -51,36 +51,70 @@ const helper={
 			engine.add.tab("slides").slide(e.name,function(){
 				engine.slide=j;
 				engine.clear();
-				helper.slides();
+				view.slides();
 			},function(){
 				engine.data.splice(j,1);
-				helper.slides();
+				view.slides();
 				if(j==engine.slide) engine.clear();
 			})
 			i++;
 		})
 	},
+
+	settings:function(){
+		engine.remove.tab("settings").content();
+		let add=engine.add.tab("settings");
+		var select=add.select("Loop:",function(){
+			engine.settings.loop=this.value.toBoolean();
+		});
+		select.addOption("Yes","true");
+		select.addOption("No","false");
+		select.value=engine.settings.loop;
+
+		var select=add.select("Autoplay:",function(){
+			engine.settings.autoplay=eval(this.value);
+		});
+		select.addOption("Yes","true");
+		select.addOption("No","false");
+		select.value=engine.settings.autoplay;
+
+		var select=add.select("Animation:",function(){
+			engine.settings.animateOut=this.value;
+		});
+		select.addOption("Fade","fadeOut");
+		select.addOption("Slide","");
+		select.value=engine.settings.animateOut;
+
+		var input=add.input("Animation speed:","number",engine.settings.autoplayTimeout);
+		$(input).on("change",function(){
+			engine.settings.autoplayTimeout=Number(this.value);
+		});
+	}
 }
 
 const engine={
+	plugin:{},
 	settings:{
 		loop:true,
 		autoplay:true,
-		animateOut:"fade-out",
+		animateOut:"fadeOut",
 		margin:0,
 		nav:false,
 		dots:false,
 		items:1,
 		center:true,
-		autoplaySpeed:2000
+		autoplayTimeout:2000
+		
 	},
+	target:null,
+	element:null,
 	iframe:null,
 	slide:0,
 	data:[],
 	init:function(container,tools){
 		var editor=document.createElement("div");
 		editor.className="allsenses-slider";
-		editor.innerHTML='<div class="panel active"><div class="options"></div><div class="tools"></div><div class="bar"></div></div><div class="content active"></div>';
+		editor.innerHTML='<div class="panel active"><div class="options"></div><div class="tools"></div><div class="bar"></div><a class="panel-switch active"><i class="fal fa-angle-right"></i></a></div><div class="content active"></div>';
 		$(container).append(editor);
 		var iframeElem=document.createElement("iframe");
 		iframeElem.width="100%";
@@ -98,25 +132,57 @@ const engine={
 			engine.add.iframe.style("css/slider.css");
 			engine.add.iframe.script("js/jquery.js",function(){
 				engine.add.iframe.script("js/owl/owl.carousel.min.js");
+				engine.iframe.$("body").on("click",function(event){
+					engine.iframe.$("[data-active]").attr("data-active","false");
+					engine.target=null;
+					engine.element=null;
+				})
 			});
 		});
 		engine.iframe.location.reload();
 		iframe[0].src="";
 		
+
+		$(".allsenses-slider .panel-switch").on("click",function(){
+			$(this).toggleClass("active");
+			$(".allsenses-slider .panel").toggleClass("active");
+			$(".allsenses-slider .content").toggleClass("active");
+		});
 		
 		engine.add.panel.option("fal fa-puzzle-piece","tools",true);
-		engine.add.panel.option("fal fa-presentation","slides",false,helper.slides);
+		engine.add.panel.option("fal fa-presentation","slides",false,view.slides);
+		engine.add.panel.option("fal fa-cog","settings",false,view.settings);
+		engine.add.panel.option("fal fa-sliders-h","properties",false);
 
+		engine.add.bar("fal fa-arrow-left");
 		engine.add.bar("fal fa-laptop",Laptop);
-		engine.add.bar("fal fa-tablet",);
+		engine.add.bar("fal fa-tablet",Tablet);
 		engine.add.bar("fal fa-mobile",Mobile);
+		engine.add.bar("fas fa-play green",engine.preview);
 		
-		engine.load.tools(tools);
+		var notification=document.createElement("div");
+		notification.className="notification";
+		editor.appendChild(notification);
+
+		var load=document.createElement("div");
+		load.className="load active";
+		load.innerHTML='<div class="progress"></div><img class="logo" src="logo.svg">';
+		editor.appendChild(load);
+
+		engine.load.tools(tools,function(loaded){
+			var progress=loaded/tools.length*100;
+			$(".load .progress").attr("style","width:"+progress+"%");
+			if(loaded==tools.length){
+				setTimeout(function(){
+					$(".load").removeClass("active");
+				},100)
+			}
+		});
 	},
 
 	load:{
-		tools:function(tools,callback){
-			callback=callback || function(){};
+		tools:function(tools,progress){
+			progress=progress || function(){};
 			var loaded=0;
 			tools.forEach(function(e){
 				var script=document.createElement("script");
@@ -124,9 +190,7 @@ const engine={
 				script.src="js/tools/"+e+"/"+e+".js";
 				$(script).on("load",function(){
 					loaded++;
-					if(loaded==tools.length){
-						callback();
-					}
+					progress(loaded)
 				});
 				document.body.appendChild(script);
 			});
@@ -138,11 +202,14 @@ const engine={
 		if(engine.data[engine.slide]){
 			var slide=engine.data[engine.slide];
 			engine.iframe.document.body.innerHTML="";
+			var container=document.createElement("div");
+			container.className="main-slider";
 			var div=document.createElement("div");
 			div.className="item";
+			container.appendChild(div);
 			$(div).attr("style","background-image:url("+slide.background+")");
 			engine.render(engine.data[engine.slide].content,div);
-			engine.iframe.document.body.appendChild(div);
+			engine.iframe.document.body.appendChild(container);
 	
 			var event=new Event("engine-clear");
 			window.dispatchEvent(event);
@@ -150,21 +217,46 @@ const engine={
 			engine.iframe.document.body.innerHTML="";
 		}
 	},
+
+	edit:function(target,element){
+		engine.remove.tab("properties").content(true);
+		engine.target=target;
+		engine.element=element;
+		var event=new Event("engine-edit");
+		window.dispatchEvent(event);
+	},
 	
-	container:null,
 	render:function(data,container){
 		data=data || engine.data[engine.slide].content;
 		let id=0;
 		data.forEach(function(e){
 			e.id=id++;
 			var obj=document.createElement(e.type);
-			obj.className=e.class
+			obj.className=e.class.join(" ");
 			obj.innerHTML=e.text;
 			obj.src=e.src;
 			obj.contentEditable=e.editable || false;
 			if(e.editable){
 				$(obj).on("input",function(){
 					e.text=this.innerText;
+				});
+			}
+			if(e.canFocus){
+				$(obj).on("click",function(event){
+					event.stopPropagation();
+					engine.edit(e,obj);
+				});
+				$(obj).on("mouseover",function(event){
+					event.stopPropagation();
+					engine.iframe.$("[data-hover]").attr("data-hover","false");
+					$(this).attr("data-hover","true");
+				});
+				$(obj).on("mouseout",function(event){
+					$(this).attr("data-hover","false");
+				});
+				$(obj).on("click",function(){
+					engine.iframe.$("[data-active]").attr("data-active","false");
+					$(this).attr("data-active","true");
 				});
 			}
 			engine.render(e.content,obj);
@@ -176,15 +268,15 @@ const engine={
 	preview:function(){
 		engine.iframe.document.body.innerHTML=engine.get.HTML();
 		engine.iframe.$(".owl-carousel").owlCarousel({
-			loop:true,
-			autoplay:true,
-			animateOut:"fadeOut",
-			margin:0,
-			nav:false,
-			dots:false,
-			items:1,
-			center:true,
-			autoplaySpeed:1000
+			loop:engine.settings.loop,
+			autoplay:engine.settings.autoplay,
+			animateOut:engine.settings.animateOut,
+			margin:engine.settings.margin,
+			nav:engine.settings.nav,
+			dots:engine.settings.dots,
+			items:engine.settings.items,
+			center:engine.settings.center,
+			autoplayTimeout:engine.settings.autoplayTimeout
 		});
 	},
 
@@ -197,7 +289,7 @@ const engine={
 			data=data || engine.data;
 			if(data==engine.data){
 				container=document.createElement("div");
-				container.className="owl-carousel owl-theme";
+				container.className="main-slider owl-carousel owl-theme";
 			}
 			data.forEach(function(e){
 				if(e.type=="slide"){
@@ -206,7 +298,7 @@ const engine={
 					$(obj).attr("style","background-image:url("+e.background+")");
 				}else{
 					var obj=document.createElement(e.type);
-					obj.className=e.class;
+					obj.className=e.class.join(" ");
 					obj.innerHTML=e.text;
 					obj.src=e.src;
 				}
@@ -225,8 +317,12 @@ const engine={
 			var self={};
 			self.target=$('.allsenses-slider .panel [data-tab="'+tabName+'"]');
 			
-			self.content=function(){
+			self.content=function(active){
 				self.target.html("");
+				if(active){
+					$('.allsenses-slider .panel [data-tab]').removeClass("active");
+					self.target.addClass("active")
+				}
 			}
 			
 			return self;
@@ -234,6 +330,13 @@ const engine={
 	},
 	
 	add:{
+		style:function(sources){
+			var style=document.createElement("style");
+			for(var i=0;i<sources.length;i++){
+				style.innerHTML+='@import url("tools/'+sources[i]+'.css");\n';
+			}
+			document.head.appendChild(style);
+		},
 		iframe:{
 			script:function(src,callback){
 				var script=document.createElement("script");
@@ -296,10 +399,11 @@ const engine={
 				self.target.append(div);
 			},
 
-			self.input=function(title,type,value){
+			self.input=function(title,type,value,change){
 				var input=document.createElement("input");
 				input.type=type;
 				input.value=value;
+				$(input).on("change",change);
 
 				var label=document.createElement("label");
 				label.innerHTML=lang.translate(title);
@@ -307,6 +411,24 @@ const engine={
 
 				$(self.target).append(label);
 				return input;
+			}
+
+
+			self.select=function(title,change){
+				change=change || null;
+				var select=document.createElement("select");
+				select.addOption=function(name,value){
+					name=lang.translate(name);
+					this.innerHTML+='<option value="'+value+'">'+name+'</option>';
+				}
+				$(select).on("change",change);
+				var label=document.createElement("label");
+				label.innerHTML=lang.translate(title);
+				label.appendChild(select);
+
+				$(self.target).append(label);
+				return select;
+
 			}
 
 			self.button=function(title,click){
@@ -378,18 +500,38 @@ const engine={
 		},
 		
 		content:function(instance){
+			if(!engine.data[engine.slide]) return false;
 			engine.data[engine.slide].content=[];
 			engine.data[engine.slide].content.push(instance);
 			engine.clear();
-		}
+		},
 	},
+	notification:function(icon,text,strong,stop){
+		icon=icon || "";
+		text=lang.translate(text) || "";
+		strong=lang.translate(strong) || "";
+		stop=stop || false;
+		text=text || "";
+
+		$(".allsenses-slider .notification").html("");
+		var div=document.createElement("div");
+		$(div).html('<i class="'+icon+'"></i><span>'+text+' <strong>'+strong+'</strong></span>');
+		$(".allsenses-slider .notification")[0].appendChild(div);
+		$(".allsenses-slider .notification").addClass("active");
+		clearTimeout(this.timeout);
+		this.timeout=setTimeout(function(){
+			$(".allsenses-slider .notification").removeClass("active");
+		},5000);
+		if(stop){clearTimeout(this.timeout)}
+	},
+
 	model:{
 		tool:class{
 			constructor(){
 				this.module="model";
 				this.type="h1";
 				this.lockClass=[];
-				this.class="";
+				this.class=[];
 				this.text="";
 				this.src="";
 				this.placeholder="Sample text";
@@ -409,6 +551,18 @@ const engine={
 			}
 		}
 	}
+}
+
+Array.prototype.remove=function(value){
+	if(this.includes(value)){
+		return this.splice(this.indexOf(value),1);
+	}
+	return false;
+}
+
+String.prototype.toBoolean=function(){
+	if(this=="true" || this==true || this=="1" || this==1) return true;
+	return false;
 }
 
 export {engine};

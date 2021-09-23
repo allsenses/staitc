@@ -2,11 +2,13 @@ import { engine } from "../init.js";
 
 
 export function Laptop(){
-	engine.preview();
-	$(".allsenses-slider .content").attr("style","100%");	
+	$(".allsenses-slider .content iframe").attr("style","");	
+}
+
+export function Tablet(){
+	$(".allsenses-slider .content iframe").attr("style","width:768px");
 }
 
 export function Mobile(){
-	engine.preview();
-	$(".allsenses-slider .content").attr("style","width:320px");
+	$(".allsenses-slider .content iframe").attr("style","width:375px");
 }

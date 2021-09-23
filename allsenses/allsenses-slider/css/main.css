@@ -1,7 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 *{
 	-webkit-box-sizing: border-box;
+	scrollbar-width: thin;
+	scrollbar-color:var(--scroll-thumb) var(--scroll-bg);
 }
+
 
 :root{
 	--panel-bg:#1e293a;
@@ -9,16 +12,79 @@
 	--panel-cat:#1a2331;
 	--panel-object:#293444;
 	--panel-input:#192231;
+
+	--scroll-bg:rgba(0,0,0,.25);
+	--scroll-thumb:rgba(255,255,255,.4);
+
+	--special:#39b54a;
 }
 
 body{
 	font-family: "Roboto";
+	background: #222;
 }
 
-.main-slider .item{
-	height: 100vh;
-	background: #999;
+
+.allsenses-slider .load{
+	position: fixed;
+	top:0;
+	left:0;
+	right: 0;
+	bottom: 0;
+	background: var(--panel-bg);
+	z-index: 110;
+	visibility: hidden;
+	opacity: 0;
+	-webkit-transition: .5s;
+	-webkit-transform: scale(2);
 }
+
+.allsenses-slider .load .progress{
+	position: absolute;
+	top:0;
+	left:0;
+	background: var(--special);
+	height: 4px;
+	width: 0%;
+	-webkit-box-shadow:0 8px 16px var(--special);
+	-webkit-transition: .1s;
+}
+.allsenses-slider .load .progress.hidden{
+	opacity: 0;
+	visibility: hidden;
+}
+
+
+.allsenses-slider .load.active{
+	visibility: visible;
+	opacity: 1;
+	-webkit-transform: scale(1);
+}
+
+.allsenses-slider .load .logo{
+	position: absolute;
+	top:50%;
+	left:50%;
+	width: 164px;
+	-webkit-transform: translate(-50%,-50%);
+	-webkit-animation: logo 1.5s infinite linear;
+}
+
+@-webkit-keyframes logo{
+	0%{
+		opacity: 1;
+		-webkit-transform: translate(-50%,-50%);
+	}
+	50%{
+		opacity: .2;
+		-webkit-transform: translate(-50%,-50%) scale(1.1);
+	}
+	100%{
+		opacity: 1;
+		-webkit-transform: translate(-50%,-50%);
+	}
+}
+
 
 .allsenses-slider .panel{
 	position: fixed;
@@ -65,6 +131,13 @@ body{
 .allsenses-slider .panel [data-tab]{
 	display: none;
 	padding: .5rem;
+	padding: .5rem;
+	overflow: auto;
+	position: absolute;
+	top: 48px;
+	right: 0;
+	left: 0;
+	bottom: 32px;
 }
 
 .allsenses-slider .panel [data-tab].active{
@@ -139,6 +212,23 @@ body{
 	background: rgba(0,0,0,.1);
 }
 
+.allsenses-slider .panel a.panel-switch{
+	display: inline-block;
+	position: absolute;
+	right: 0;
+	top: 50%;
+	padding: 12px 4px;
+	background: var(--panel-bg);
+	color: var(--panel-text);
+	-webkit-transform: translate(100%,-50%);
+	-webkit-box-shadow: 6px 0 6px rgba(0,0,0,.1);
+	border-radius: 0 4px 4px 0;
+}
+
+.allsenses-slider .panel a.panel-switch.active i {
+    -webkit-transform: scale(-1,1);
+}
+
 
 .allsenses-slider .button{
 	display: inline-block;
@@ -149,13 +239,17 @@ body{
 	color: var(--panel-text);
 }
 
+.allsenses-slider .green{
+    color: var(--special);
+}
+
 .allsenses-slider .content{
 	position: fixed;
 	top:0;
 	left:0;
 	bottom: 0;
 	right: 0;
-	margin: 0 auto;
+	-webkit-transition: .2s;
 }
 
 .allsenses-slider .content.active{
@@ -163,9 +257,16 @@ body{
 }
 
 .allsenses-slider .content iframe{
+	position: absolute;
+	top:0;
+	bottom: 0;
+	left:0;
+	right: 0;
+	margin:0 auto;
 	width: 100%;
 	height: 100%;
 	border: none;
+	-webkit-transition:.5s;
 }
 
 .allsenses-slider input, .allsenses-slider select {
@@ -209,6 +310,72 @@ body{
     top: 0;
     right: 0;
     margin: 0;
+}
+
+.allsenses-slider .notification {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    min-width: 30vw;
+    height: 60px;
+    color: #fff;
+    background: #59d954;
+    margin: 16px 32px;
+    border-radius: 4px;
+    -webkit-transform: translateY(150%);
+    -webkit-box-shadow: 0 4px 8px rgba(0,0,0,.15);
+    opacity: 0;
+    visibility: hidden;
+    -webkit-transition: .3s;
+    overflow: hidden;
+    z-index: 105;
+}
+
+.allsenses-slider .notification::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0,0,0,.2);
+    height: 4px;
+}
+
+.allsenses-slider .notification.active {
+    -webkit-transform: translateY(0%);
+    visibility: visible;
+    opacity: 1;
+}
+
+.allsenses-slider .notification div {
+    position: absolute;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    left: 0;
+    right: 0;
+}
+
+.allsenses-slider .notification div i {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    line-height: 32px;
+    font-size: 14px;
+    vertical-align: middle;
+    text-align: center;
+    border-radius: 999px;
+    background-color: rgba(255,255,255,.25);
+    margin: 0 20px;
+}
+
+.allsenses-slider .notification div span {
+    display: inline-block;
+    width: 75%;
+    vertical-align: middle;
+    padding-right: 16px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 14px;
 }
 
 

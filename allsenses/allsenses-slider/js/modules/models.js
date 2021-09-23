@@ -19,12 +19,13 @@ class Text extends engine.model.tool{
 }
 
 class Container extends engine.model.tool{
-	constructor(){
+	constructor(content){
 		super();
 		this.module="container";
 		this.type="div";
-		this.class="grid-container";
+		this.class=["grid-container"];
 		this.editable=false;
+		this.content=content || [];
 	}
 }
 
@@ -33,7 +34,7 @@ class Grid extends engine.model.tool{
 		super();
 		this.module="grid";
 		this.type="div";
-		this.class="grid-x";
+		this.class=["grid-x"];
 		this.editable=false;
 		this.content=content || [];
 	}
@@ -44,7 +45,7 @@ class Cell extends engine.model.tool{
 		super();
 		this.module="cell";
 		this.type="div";
-		this.class="cell small-12 medium-6 large-6";
+		this.class=["cell","small-12","medium-6","large-6"];
 		this.editable=false;
 		this.content=content || [];
 	}

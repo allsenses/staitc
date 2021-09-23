@@ -5,6 +5,7 @@ import { Heading, Text, Container, Grid, Cell, Image } from "../../modules/model
 	class Template extends Container{
 		constructor(){
 			super();
+			this.class.push("description","middle");
 			this.content=[
 				new Grid([
 					new Cell([
@@ -22,6 +23,7 @@ import { Heading, Text, Container, Grid, Cell, Image } from "../../modules/model
 	class Template2 extends Container{
 		constructor(){
 			super();
+			this.class.push("description","middle");
 			this.content=[
 				new Grid([
 					new Cell([
@@ -36,7 +38,6 @@ import { Heading, Text, Container, Grid, Cell, Image } from "../../modules/model
 		}
 	}
 
-	
 	
 	engine.add.tab("tools").tool("fal fa-image","Template 1",Template);
 	engine.add.tab("tools").tool("fal fa-image","Template 2",Template2);

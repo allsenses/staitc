@@ -15,13 +15,14 @@
 <body>
 	
 	
-	<script type="module" src="js/init.js"></script>
+	
 	<script type="module">
 		import {engine} from "./js/init.js";
 		
 		$(window).on("load",function(){
-			var tools=["templates"];
-			engine.init(document.body,tools);
+			var dir="/templates/admin/scripts/allsenses-slider/";
+			var tools=["save","image","templates"];
+			engine.init(document.body,dir,tools);
 		});
 	</script>
 </body>
