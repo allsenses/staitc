@@ -1,26 +1,7 @@
-// $(window).on("load",function(){
-// 	document.querySelectorAll(".owl-carousel").forEach(function(e){
-// 		if($(e).attr("data-loop")){
-// 			$(e).owlCarousel({
-// 				loop:eval($(e).attr("data-loop")),
-// 				autoplay:eval($(e).attr("data-autoplay")),
-// 				animateOut:$(e).attr("data-animateout"),
-// 				margin:Number($(e).attr("data-margin")),
-// 				nav:eval($(e).attr("data-nav")),
-// 				dots:eval($(e).attr("data-dots")),
-// 				items:Number($(e).attr("data-items")),
-// 				center:eval($(e).attr("data-center")),
-// 				autoplaySpeed:Number($(e).attr("data-autoplayspeed")),
-// 			});
-// 		}
-// 	});
-// })
-
 import { Back } from "./modules/goback.js";
 import { lang } from "./modules/lang.js";
 import { Tag } from "./modules/tag.js";
 import { Laptop, Mobile, Tablet } from "./modules/preview.js";
-import { view } from "./modules/view.js";
 
 
 
@@ -28,70 +9,52 @@ const engine={
 	directory:"",
 	plugin:{},
 	settings:{
-		loop:true,
-		autoplay:true,
-		animateOut:"fadeOut",
-		margin:0,
-		nav:false,
-		dots:false,
-		items:1,
-		center:true,
-		autoplayTimeout:2000
+		group:{}
 	},
 	target:null,
 	element:null,
 	iframe:null,
 	slide:0,
 	data:[],
+	draggable:null,
+	beforeCallback:null,
 	init:function(container,tools){
 		var editor=new Tag("div");
-		editor.className="allsenses-slider";
+		editor.className="engine";
 		editor.innerHTML='<div class="panel active"><div class="options"></div><div class="tools"></div><div class="bar"></div><a class="panel-switch active"><i class="fal fa-angle-right"></i></a></div><div class="content active"></div><div class="popup"><form></form></div>';
 		$(container).append(editor);
 		var iframeElem=new Tag("iframe");
 		iframeElem.width="100%";
 		iframeElem.height="100%";
-		$(".allsenses-slider .content").append(iframeElem);
+		$(".engine .content").append(iframeElem);
 		
-		engine.iframe=$(".allsenses-slider .content iframe")[0].contentWindow;
+		engine.iframe=$(".engine .content iframe")[0].contentWindow;
 		
-		let iframe=$(".allsenses-slider .content iframe");
+		let iframe=$(".engine .content iframe");
 		iframe.on("load",function(){
-			engine.add.iframe.style("js/owl/owl.carousel.min.css");
-			engine.add.iframe.style("js/owl/owl.theme.default.min.css");
 			engine.add.iframe.style("css/app.css");
 			engine.add.iframe.style("css/fontawesome/css/all.min.css");
 			engine.add.iframe.style("css/slider.css");
 			engine.add.iframe.style("/templates/default/css/style.css",true);
-			engine.add.iframe.script("js/jquery.js",function(){
-				engine.add.iframe.script("js/owl/owl.carousel.min.js");
-				engine.iframe.$("body").on("click",function(event){
-					engine.iframe.$("[data-active]").attr("data-active","false");
-					engine.remove.tab("properties").content();
-					engine.target=null;
-					engine.element=null;
-				})
-			});
+			engine.add.iframe.script("js/jquery.js");
 		});
 		engine.iframe.location.reload();
 		iframe[0].src="";
 		
-		$(".allsenses-slider .panel-switch").on("click",function(){
+		$(".engine .panel-switch").on("click",function(){
 			$(this).toggleClass("active");
-			$(".allsenses-slider .panel").toggleClass("active");
-			$(".allsenses-slider .content").toggleClass("active");
+			$(".engine .panel").toggleClass("active");
+			$(".engine .content").toggleClass("active");
 		});
 		
 		engine.add.panel.option("fal fa-puzzle-piece","tools",true);
-		engine.add.panel.option("fal fa-presentation","slides",false,view.slides);
-		engine.add.panel.option("fal fa-cog","settings",false,view.settings);
-		engine.add.panel.option("fal fa-sliders-h","properties",false);
+		
+		engine.add.panel.option("fal fa-cogs","properties",false);
 
 		engine.add.bar("fal fa-arrow-left",Back);
 		engine.add.bar("fal fa-laptop",Laptop);
 		engine.add.bar("fal fa-tablet",Tablet);
 		engine.add.bar("fal fa-mobile",Mobile);
-		engine.add.bar("fas fa-play green",engine.preview);
 		
 		var notification=new Tag("div");
 		notification.className="notification";
@@ -145,26 +108,18 @@ const engine={
 			}
 		}
 	},
+
+	save:function(){
+		localStorage.setItem("allsenses-editor",JSON.stringify(engine.settings));
+	},
 	
 	
 	clear:function(){
-		if(engine.data[engine.slide]){
-			var slide=engine.data[engine.slide];
-			engine.iframe.document.body.innerHTML="";
-			var container=new Tag("div");
-			container.className="main-slider";
-			var div=new Tag("div");
-			div.className="item";
-			container.appendChild(div);
-			$(div).attr("style","background-image:url("+slide.background+")");
-			engine.render(engine.data[engine.slide].content,div);
-			engine.iframe.document.body.appendChild(container);
-	
-			var event=new Event("engine-clear");
-			window.dispatchEvent(event);
-		}else{
-			engine.iframe.document.body.innerHTML="";
-		}
+		engine.iframe.document.body.innerHTML="";
+		engine.render(engine.data,engine.iframe.document.body);
+
+		var event=new Event("engine-clear");
+		window.dispatchEvent(event);
 	},
 
 	edit:function(target,element){
@@ -175,8 +130,7 @@ const engine={
 		window.dispatchEvent(event);
 	},
 	
-	render:function(data,container){
-		data=data || engine.data[engine.slide].content;
+	render:function(data,container,parentObj){
 		let id=0;
 		data.forEach(function(e){
 			e.id=id++;
@@ -185,6 +139,7 @@ const engine={
 			obj.innerHTML=e.text;
 			obj.src=e.src;
 			obj.contentEditable=e.editable || false;
+			obj.parent=data;
 			if(e.editable){
 				$(obj).on("input",function(){
 					e.text=this.innerText;
@@ -208,10 +163,63 @@ const engine={
 					$(this).attr("data-active","true");
 				});
 			}
+
+			var parent=null;
+			if(e.container)parent=e;
+			if(e.parentObj && e.parentObj.container){
+				parent=e;
+				engine.drop(e,e.parent,e.id,container);
+			}
+
 			engine.render(e.content,obj);
+
+			if(e.container){
+				engine.drop(e,e.content,e.content.length,obj);
+			}
+
 			
 			$(container).append(obj);
 		});
+
+		if(engine.data==data){
+			var drop=new Tag("div","add-main");
+			drop.innerHTML='<i class="far fa-plus"></i>';
+			$(drop).on("drop",function(event){
+				engine.add.content(engine.data);
+				$(this).removeClass("active");
+			});
+			$(drop).on("dragover",function(event){
+				$(this).addClass("active");
+				event.preventDefault();
+			});
+			$(drop).on("dragleave",function(){
+				$(this).removeClass("active");
+			});
+			engine.iframe.document.body.append(drop);
+		}
+	},
+
+	drop:function(e,content,id,container){
+		var div=new Tag("a");
+		div.className="add";
+		if(content.length==0){
+			div.className="add visible"
+		};
+		div.innerHTML='<i class="far fa-plus"></i>';
+		div.engineTarget=e;
+		div.setAttribute("data-id",id);
+		$(div).on("drop",function(){
+			engine.add.object(content,id);
+			$(this).removeClass("active");
+		})
+		$(div).on("dragover",function(event){
+			event.preventDefault();
+			$(this).addClass("active");
+		});
+		$(div).on("dragleave",function(event){
+			$(this).removeClass("active");
+		});
+		$(container)[0].appendChild(div);
 	},
 
 	preview:function(){
@@ -278,16 +286,25 @@ const engine={
 			$(".content").attr("style","");
 		}
 	},
+
+	show:{
+		panel:{
+			option:function(name){
+				$(".engine .panel [data-tab]").removeClass("active");
+				$('.engine .panel [data-tab="'+name+'"]').addClass("active");
+			}
+		}
+	},
 	
 	remove:{
 		tab:function(tabName){
 			var self={};
-			self.target=$('.allsenses-slider .panel [data-tab="'+tabName+'"]');
+			self.target=$('.engine .panel [data-tab="'+tabName+'"]');
 			
 			self.content=function(active){
 				self.target.html("");
 				if(active){
-					$('.allsenses-slider .panel [data-tab]').removeClass("active");
+					$('.engine .panel [data-tab]').removeClass("active");
 					self.target.addClass("active")
 				}
 			}
@@ -334,12 +351,12 @@ const engine={
 				if(active) div.className="active";
 				div.setAttribute("data-tab",name);
 				$(a).on("click",function(){
-					$(".allsenses-slider .panel [data-tab]").removeClass("active");
+					$(".engine .panel [data-tab]").removeClass("active");
 					$(div).addClass("active");
 				});
 				$(a).on("click",click);
-				$(".allsenses-slider .panel .options").append(a);
-				$(".allsenses-slider .panel").append(div);
+				$(".engine .panel .options").append(a);
+				$(".engine .panel").append(div);
 				return div;
 			}
 		},
@@ -364,30 +381,47 @@ const engine={
 		
 		tab:function(tabName){
 			var self={};
-			self.target=$('.allsenses-slider .panel [data-tab="'+tabName+'"]');
-			self.tool=function(icon,name,className){
+			self.target=$('.engine .panel [data-tab="'+tabName+'"]');
+			self.tool=function(type,icon,name,dragClass,beforeCallback){
+				if(typeof(engine.settings.group[type])=="undefined"){
+					engine.settings.group[type]=true;
+				}
+				icon=icon || "fal fa-tools";
+				name=lang.translate(name) || "";
+				type=lang.translate(type) || "Extra";
+				dragClass=dragClass || {};
+
 				var a=new Tag("a");
 				a.className="tool";
 				a.innerHTML='<i class="'+icon+'"></i>'+name;
-				$(a).on("click",function(){
-					engine.add.content(new className());
+				a.draggable=true;
+				$(a).on("drag",function(){
+					engine.draggable=dragClass;
+					engine.beforeCallback=beforeCallback || null;
 				});
-				self.target.append(a);
+
+				if($(self.target).find('[data-type="'+type+'"')[0]){
+					$(self.target).find('[data-type="'+type+'"')[0].append(a)
+				}else{
+					let div=new Tag("div");
+					if(engine.settings.group[type]) $(div).addClass("active");
+					div.setAttribute("data-type",type);
+					div.append(a);
+					var a=new Tag("a");
+					a.className="tools-type";
+					if(engine.settings.group[type]) $(a).addClass("active");
+					a.innerHTML=type;
+					$(a).on("click",function(){
+						$(self.target).find('[data-type="'+type+'"]').toggleClass("active");
+						$(this).toggleClass("active");
+						engine.settings.group[type]=this.classList.contains("active");
+						engine.save();
+					});
+					self.target.append(a);
+					self.target.append(div);
+				}
 				return a;
 			}
-			
-			self.slide=function(title,click,removeCallback){
-				var div=new Tag("div");
-				div.className="slide";
-				div.innerHTML=title;
-				var remove=new Tag("a");
-				remove.className="remove";
-				remove.innerHTML='<i class="fal fa-trash-alt"></i>';
-				$(remove).on("click",removeCallback);
-				div.appendChild(remove);
-				$(div).on("click",click);
-				self.target.append(div);
-			},
 
 			self.input=function(title,type,value,change){
 				let tag=engine.model.input(title,type,value,change);
@@ -430,14 +464,50 @@ const engine={
 			var a=new Tag("a");
 			a.innerHTML='<i class="'+icon+'"></i>';
 			$(a).on("click",click);
-			$(".allsenses-slider .panel .bar").append(a);
+			$(".engine .panel .bar").append(a);
 		},
 		
-		content:function(instance){
-			if(!engine.data[engine.slide]) return false;
-			engine.data[engine.slide].content=[];
-			engine.data[engine.slide].content.push(instance);
+		content:function(parent,id){
+			if(engine.beforeCallback){
+				if(engine.draggable.constructor==Object){
+					var target=engine.draggable;
+				}else{
+					var target=new engine.draggable();
+				}
+				if(typeof(id)=="number"){
+					parent.insert(id,target);
+				}else{
+					parent.push(target);
+				}
+				engine.beforeCallback(target);
+				engine.beforeCallback=null;
+			}else{
+				if(engine.draggable){
+					try{
+						if(typeof(id)=="number"){
+							parent.insert(id,new engine.draggable());
+						}else{
+							parent.push(new engine.draggable());
+						}
+					}catch(err){
+						console.log(err);
+						var target=engine.draggable;
+						target.parent.splice(target.id,1);
+						if(typeof(id)=="number"){
+							if(engine.draggable.parent==parent && engine.draggable.id<id)id--;
+							parent.insert(id,engine.draggable);
+						}else{
+							parent.push(engine.draggable);
+						}
+					}
+					engine.draggable=null;
+				}
+			}
+			engine.show.panel.option("tools")
+			//engine.toolbox.hide();
 			engine.clear();
+			var event=new Event("engine-add");
+			window.dispatchEvent(event);
 		},
 	},
 	notification:function(icon,text,strong,stop){
@@ -447,42 +517,41 @@ const engine={
 		stop=stop || false;
 		text=text || "";
 
-		$(".allsenses-slider .notification").html("");
+		$(".engine .notification").html("");
 		var div=new Tag("div");
 		$(div).html('<i class="'+icon+'"></i><span>'+text+' <strong>'+strong+'</strong></span>');
-		$(".allsenses-slider .notification")[0].appendChild(div);
-		$(".allsenses-slider .notification").addClass("active");
+		$(".engine .notification")[0].appendChild(div);
+		$(".engine .notification").addClass("active");
 		clearTimeout(this.timeout);
 		this.timeout=setTimeout(function(){
-			$(".allsenses-slider .notification").removeClass("active");
+			$(".engine .notification").removeClass("active");
 		},5000);
 		if(stop){clearTimeout(this.timeout)}
 	},
 
 	model:{
-		tool:class{
-			constructor(){
-				this.module="model";
-				this.type="h1";
-				this.lockClass=[];
-				this.class=[];
-				this.text="";
-				this.src="";
-				this.placeholder="Sample text";
-				this.content=[];
-				this.editable=true;
-				this.container=false;
-				this.textOptions=false;
-				this.spellcheck=null;
-				this.alt="";
-				this.canDrag=false;
-				this.canRemove=true;
-				this.canFocus=true;
-				this.style="";
-				this.href="";
-				this.data={};
-				this.attr={};
-			}
+		// Old versions compatibility
+		tool:function(){
+			this.type="h1";
+			this.lockClass=[];
+			this.class=[];
+			this.text="";
+			this.src="";
+			this.module="test";
+			this.placeholder="";
+			this.content=[];
+			this.editable=true;
+			this.container=false;
+			this.textOptions=false;
+			this.spellcheck=null;
+			this.alt="";
+			this.canDrag=false;
+			this.canRemove=true;
+			this.canFocus=true;
+			this.style="";
+			this.href="";
+			this.data={};
+			this.attr={};
 		},
 
 		tag:function(obj){
@@ -593,6 +662,10 @@ Array.prototype.remove=function(value){
 	return false;
 }
 
+Array.prototype.insert = function ( index, item ) {
+    this.splice( index, 0, item );
+};
+
 String.prototype.toBoolean=function(){
 	if(this=="true" || this==true || this=="1" || this==1) return true;
 	return false;
@@ -600,7 +673,7 @@ String.prototype.toBoolean=function(){
 
 export {engine};
 
-
+window.engine=engine;
 
 // data-loop="true" 
 // data-center="true" 

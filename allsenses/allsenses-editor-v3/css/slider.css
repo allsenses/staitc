@@ -1,3 +1,18 @@
+:root{
+	--background:#fafafa;
+	--text:#474747;
+}
+
+
+[data-container]{
+	padding-top:1rem;
+	padding-bottom: 1rem;
+}
+
+[data-container=true]{
+	display: block;
+}
+
 [data-hover=true]{
 	outline: 1px dashed #376fd0;
 	outline-offset: -1px;
@@ -32,4 +47,20 @@
 	background-position: center;
 	height:100vh;
 	position: relative;
+}
+
+.add-main{
+	display: block;
+	text-align: center;
+	cursor: default;
+	padding: .5rem 0;
+	border: 2px dashed var(--text);
+	color: var(--text);
+	opacity: .3;
+}
+
+.add-main.active{
+	border:2px dashed #6565ff;
+	color:#6565ff;
+	opacity: 1;
 }

@@ -10,6 +10,7 @@
 	--panel-bg:#1e293a;
 	--panel-text:#d3d3d3;
 	--panel-cat:#1a2331;
+	--panel-cat-text:#78808a;
 	--panel-object:#293444;
 	--panel-input:#192231;
 
@@ -22,6 +23,7 @@
 body{
 	font-family: "Roboto";
 	background: #222;
+	line-height: 1.5;
 }
 
 input[type=checkbox]{
@@ -60,7 +62,7 @@ label.checkbox input:checked + span::after{
 	-webkit-transform: translateX(12px);
 }
 
-.allsenses-slider .load{
+.engine .load{
 	position: fixed;
 	top:0;
 	left:0;
@@ -74,7 +76,7 @@ label.checkbox input:checked + span::after{
 	-webkit-transform: scale(2);
 }
 
-.allsenses-slider .load .progress{
+.engine .load .progress{
 	position: absolute;
 	top:0;
 	left:0;
@@ -84,19 +86,19 @@ label.checkbox input:checked + span::after{
 	-webkit-box-shadow:0 8px 16px var(--special);
 	-webkit-transition: .1s;
 }
-.allsenses-slider .load .progress.hidden{
+.engine .load .progress.hidden{
 	opacity: 0;
 	visibility: hidden;
 }
 
 
-.allsenses-slider .load.active{
+.engine .load.active{
 	visibility: visible;
 	opacity: 1;
 	-webkit-transform: scale(1);
 }
 
-.allsenses-slider .load .logo{
+.engine .load .logo{
 	position: absolute;
 	top:50%;
 	left:50%;
@@ -121,7 +123,7 @@ label.checkbox input:checked + span::after{
 }
 
 
-.allsenses-slider .panel{
+.engine .panel{
 	position: fixed;
 	top: 0;
 	bottom: 0;
@@ -136,18 +138,18 @@ label.checkbox input:checked + span::after{
 	z-index: 10;
 }
 
-.allsenses-slider .panel.active{
+.engine .panel.active{
 	-webkit-transform: translate(0%);
 }
 
-.allsenses-slider .panel .options{
+.engine .panel .options{
 	display: -webkit-flex;
 	justify-content: space-around;
 	height: 48px;
 	border-bottom: 1px solid rgba(255,255,255,.1);
 }
 
-.allsenses-slider .panel .options a{
+.engine .panel .options a{
 	display: -webkit-flex;
 	justify-content: center;
 	align-items: center;
@@ -159,13 +161,12 @@ label.checkbox input:checked + span::after{
 	cursor: pointer;
 }
 
-.allsenses-slider .panel .options a:hover{
+.engine .panel .options a:hover{
 	background:rgba(255,255,255,.05);
 }
 
-.allsenses-slider .panel [data-tab]{
+.engine .panel [data-tab]{
 	display: none;
-	padding: .5rem;
 	padding: .5rem;
 	overflow: auto;
 	position: absolute;
@@ -175,14 +176,18 @@ label.checkbox input:checked + span::after{
 	bottom: 32px;
 }
 
-.allsenses-slider .panel [data-tab].active{
+.engine .panel [data-tab="tools"]{
+	padding: 0;
+}
+
+.engine .panel [data-tab].active{
 	display: block;
 }
 
-.allsenses-slider .panel [data-tab] .tool{
+.engine .panel [data-tab] .tool{
 	display: inline-block;
 	padding: 0.75rem 0;
-	width: calc(50% - 26px);
+	width: calc(33.33% - 26px);
 	min-height: 82px;
 	margin: 13px 13px;
 	border-radius: 4px;
@@ -194,12 +199,12 @@ label.checkbox input:checked + span::after{
 	-webkit-transition: .3s;
 }
 
-.allsenses-slider .panel [data-tab] .tool i{
+.engine .panel [data-tab] .tool i{
 	display: block;
 	font-size: 36px;
 }
 
-.allsenses-slider .panel [data-tab] .slide{
+.engine .panel [data-tab] .slide{
 	position: relative;
 	display: block;
 	padding: 0 1rem;
@@ -212,7 +217,7 @@ label.checkbox input:checked + span::after{
 	font-size:16px;
 	text-align: left;
 }
-.allsenses-slider .panel [data-tab] .slide .remove{
+.engine .panel [data-tab] .slide .remove{
 	position: absolute;
 	top:0;
 	right: 0;
@@ -222,7 +227,7 @@ label.checkbox input:checked + span::after{
 	font-size:20px;
 }
 
-.allsenses-slider .panel .bar{
+.engine .panel .bar{
 	display: -webkit-flex;
 	justify-content: space-around;
 	position: absolute;
@@ -233,7 +238,7 @@ label.checkbox input:checked + span::after{
 	border-top: 1px solid rgba(255,255,255,.1);
 }
 
-.allsenses-slider .panel .bar a{
+.engine .panel .bar a{
 	display: -webkit-flex;
 	justify-content: center;
 	align-items: center;
@@ -243,11 +248,11 @@ label.checkbox input:checked + span::after{
 	color: var(--panel-text);
 }
 
-.allsenses-slider .panel .bar a:hover{
+.engine .panel .bar a:hover{
 	background: rgba(0,0,0,.1);
 }
 
-.allsenses-slider .panel a.panel-switch{
+.engine .panel a.panel-switch{
 	display: inline-block;
 	position: absolute;
 	right: 0;
@@ -260,12 +265,44 @@ label.checkbox input:checked + span::after{
 	border-radius: 0 4px 4px 0;
 }
 
-.allsenses-slider .panel a.panel-switch.active i {
+.engine .panel a.panel-switch.active i {
     -webkit-transform: scale(-1,1);
 }
 
 
-.allsenses-slider .button{
+.engine .panel a.tools-type{
+    position: relative;
+    display: block;
+    background: var(--panel-cat);
+    color: var(--panel-cat-text);
+    padding: 4px 8px;
+    font-size: 14px;
+    border-bottom: 1px solid rgba(0,0,0,.25);
+}
+
+.engine .panel a.tools-type:after{
+	font-family: "Font Awesome 5 Pro";
+	content:"\f107";
+	position: absolute;
+	right: 8px;
+	top:50%;
+	-webkit-transform: translateY(-50%) rotate(-90deg);
+}
+
+.engine .panel a.tools-type.active:after{
+	-webkit-transform: translateY(-50%);
+}
+
+.engine .panel [data-type]{
+	display: none;
+	padding: .5rem;
+}
+
+.engine .panel [data-type].active{
+	display: block;
+}
+
+.engine .button{
 	display: inline-block;
 	background: rgba(255,255,255,.05);
 	padding: .75rem 1.25rem;
@@ -274,11 +311,11 @@ label.checkbox input:checked + span::after{
 	color: var(--panel-text);
 }
 
-.allsenses-slider .green{
+.engine .green{
     color: var(--special);
 }
 
-.allsenses-slider .content{
+.engine .content{
 	position: fixed;
 	top:0;
 	left:0;
@@ -287,11 +324,11 @@ label.checkbox input:checked + span::after{
 	-webkit-transition: .2s;
 }
 
-.allsenses-slider .content.active{
+.engine .content.active{
 	left:320px;
 }
 
-.allsenses-slider .content iframe{
+.engine .content iframe{
 	position: absolute;
 	top:0;
 	bottom: 0;
@@ -304,7 +341,7 @@ label.checkbox input:checked + span::after{
 	-webkit-transition:.5s;
 }
 
-.allsenses-slider input, .allsenses-slider select {
+.engine input, .engine select {
     background: var(--panel-input);
     color: var(--panel-text);
     border: none;
@@ -321,7 +358,7 @@ label.checkbox input:checked + span::after{
     font-size: 12px;
 }
 
-.allsenses-slider label.checkbox span{
+.engine label.checkbox span{
 	display: inline-block;
 	position: absolute;
 	top: 50%;
@@ -330,14 +367,14 @@ label.checkbox input:checked + span::after{
 	-webkit-transform: translateY(-50%);
 }
 
-.allsenses-slider input:focus-visible{
+.engine input:focus-visible{
 	background: #182125;
 	-webkit-box-shadow:none;
 	border: none;
 	outline: none;
 }
 
-.allsenses-slider label{
+.engine label{
 	display: block;
 	height: 32px;
 	line-height: 32px;
@@ -347,7 +384,7 @@ label.checkbox input:checked + span::after{
 	font-size: 12px;
 }
 
-.allsenses-slider label input, .allsenses-slider label select {
+.engine label input, .engine label select {
     display: inline-block;
     width: 160px;
     position: absolute;
@@ -356,7 +393,7 @@ label.checkbox input:checked + span::after{
     margin: 0;
 }
 
-.allsenses-slider .notification {
+.engine .notification {
     position: fixed;
     bottom: 0;
     right: 0;
@@ -375,7 +412,7 @@ label.checkbox input:checked + span::after{
     z-index: 105;
 }
 
-.allsenses-slider .notification::after {
+.engine .notification::after {
     content: "";
     position: absolute;
     bottom: 0;
@@ -385,13 +422,13 @@ label.checkbox input:checked + span::after{
     height: 4px;
 }
 
-.allsenses-slider .notification.active {
+.engine .notification.active {
     -webkit-transform: translateY(0%);
     visibility: visible;
     opacity: 1;
 }
 
-.allsenses-slider .notification div {
+.engine .notification div {
     position: absolute;
     top: 50%;
     -webkit-transform: translateY(-50%);
@@ -399,7 +436,7 @@ label.checkbox input:checked + span::after{
     right: 0;
 }
 
-.allsenses-slider .notification div i {
+.engine .notification div i {
     display: inline-block;
     width: 32px;
     height: 32px;
@@ -412,7 +449,7 @@ label.checkbox input:checked + span::after{
     margin: 0 20px;
 }
 
-.allsenses-slider .notification div span {
+.engine .notification div span {
     display: inline-block;
     width: 75%;
     vertical-align: middle;
@@ -422,7 +459,7 @@ label.checkbox input:checked + span::after{
     font-size: 14px;
 }
 
-.allsenses-slider .popup{
+.engine .popup{
 	opacity: 0;
 	visibility: hidden;
 	position: fixed;
@@ -435,13 +472,13 @@ label.checkbox input:checked + span::after{
 	-webkit-transition:0;
 }
 
-.allsenses-slider .popup.active{
+.engine .popup.active{
 	visibility: visible;
 	opacity: 1;
 	-webkit-transition:.2s;
 }
 
-.allsenses-slider .popup form{
+.engine .popup form{
 	display: inline-block;
 	position: absolute;
 	top:50%;
@@ -456,7 +493,7 @@ label.checkbox input:checked + span::after{
 	overflow: hidden;
 }
 
-.allsenses-slider .popup form .yes,.allsenses-slider .popup form .no{
+.engine .popup form .yes,.engine .popup form .no{
 	display: inline-block;
 	width: 50%;
 	background: rgba(0, 128, 0,.25);
@@ -465,18 +502,18 @@ label.checkbox input:checked + span::after{
 	padding: 10px;
 	font-size: 22px;
 }
-.allsenses-slider .popup form .no{
+.engine .popup form .no{
 	background: rgba(255, 0, 0,.25);
 }
 
-.allsenses-slider .popup form .title{
+.engine .popup form .title{
     padding: .5rem 1rem;
 	height: 35px;
     background: var(--panel-cat);
 	color: var(--panel-text);
 }
 
-.allsenses-slider .popup form .container{
+.engine .popup form .container{
 	overflow-x: hidden;
 	overflow-y: auto;
 	position: absolute;
@@ -486,7 +523,7 @@ label.checkbox input:checked + span::after{
 	bottom: 0;
 }
 
-.allsenses-slider label.input-file{
+.engine label.input-file{
 	display: block;
 	position: relative;
 	border:3px dotted rgba(255,255,255,.1);
@@ -499,12 +536,12 @@ label.checkbox input:checked + span::after{
 	-webkit-box-sizing: content-box;
 }
 
-.allsenses-slider label.input-file:active{
+.engine label.input-file:active{
 	border-color:#376fd0;
 	color:#376fd0;
 }
 
-.allsenses-slider label.input-file input[type=file]{
+.engine label.input-file input[type=file]{
 	position: absolute;
 	top:0;
 	bottom: 0;

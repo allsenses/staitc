@@ -1,0 +1,12 @@
+:root{
+	--panel-bg:#1e293a;
+	--panel-text:#d3d3d3;
+	--panel-cat:#1a2331;
+	--panel-object:#293444;
+	--panel-input:#192231;
+
+	--scroll-bg:rgba(0,0,0,.25);
+	--scroll-thumb:rgba(255,255,255,.4);
+
+	--special:#39b54a;
+}

@@ -44,7 +44,7 @@ import { engine } from "../../init.js";
 	}
 	engine.clear();
 
-	engine.add.bar("fas fa-save green",function(){
+	engine.add.bar("fas fa-share-square green",function(){
 		engine.plugin.save();
 	});
 })();
