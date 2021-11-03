@@ -33,20 +33,31 @@
 	outline-offset: -2px;
 }
 
-.main-slider .description.middle{
-	position: absolute;
-	top:50%;
-	left:0;
-	right: 0;
-	-webkit-transform: translateY(-50%);
+
+.add{
+	display: block;
+	font-size:0;
+	text-align: center;
+	cursor: default;
 }
 
-.main-slider .item{
-	background-size: cover;
-	background-repeat: no-repeat;
-	background-position: center;
-	height:100vh;
-	position: relative;
+.add.draggable{
+	border:6px solid transparent;
+	opacity: 1;
+}
+
+.add.visible{
+	border:2px dashed var(--text);
+	color:var(--text);
+	opacity: .3;
+	font-size:16px;
+	padding:.25rem 0;
+}
+
+.add.active{
+	color:#6565ff;
+	border-color: #6565ff;
+	opacity: 1;
 }
 
 .add-main{
