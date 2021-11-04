@@ -18,7 +18,8 @@
 	<script type="module" src="js/init.js"></script>
 	<script type="module">
 		import {engine} from "./js/init.js";
-		
+		window.controller="pages";
+		window.id="1";
 		$(window).on("load",function(){
 			var tools=["save","gallery","spacing","image","container"];
 			engine.init(document.body,tools);

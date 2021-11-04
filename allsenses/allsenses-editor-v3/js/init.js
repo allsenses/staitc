@@ -36,9 +36,13 @@ const engine={
 			engine.add.iframe.style("css/fontawesome/css/all.min.css");
 			engine.add.iframe.style("css/slider.css");
 			engine.add.iframe.style("/templates/default/css/style.css",true);
-			engine.add.iframe.script("js/jquery.js");
-			$(engine.iframe.document.body).on("click",function(event){
-				engine.iframe.$("[data-active]").attr("data-active","false");
+			engine.add.iframe.script("js/jquery.js",function(){
+				engine.iframe.$("body").on("click",function(event){
+					engine.iframe.$("[data-active]").attr("data-active","false");
+					engine.target=null;
+					engine.element=null;
+					engine.show.panel.option("tools");
+				});
 			});
 		});
 		engine.iframe.location.reload();
