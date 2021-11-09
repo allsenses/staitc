@@ -37,12 +37,12 @@ const engine={
 			engine.add.iframe.style("css/slider.css");
 			engine.add.iframe.style("/templates/default/css/style.css",true);
 			engine.add.iframe.script("js/jquery.js",function(){
-				engine.iframe.$("body").on("click",function(event){
+				engine.iframe.addEventListener("click",function(event){
 					engine.iframe.$("[data-active]").attr("data-active","false");
 					engine.target=null;
 					engine.element=null;
 					engine.show.panel.option("tools");
-				});
+				},true);
 			});
 		});
 		engine.iframe.location.reload();
@@ -647,7 +647,7 @@ const engine={
 					}
 				}
 				tag.disabled=obj.disabled;
-				tag.type=obj.type;
+				if(obj.type) tag.type=obj.type;
 				tag.value=obj.value;
 				tag.innerHTML=obj.html;
 				tag.placeholder=obj.placeholder;

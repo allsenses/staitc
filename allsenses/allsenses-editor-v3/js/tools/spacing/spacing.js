@@ -1,18 +1,21 @@
+import { engine } from "../../init.js";
+
 (function(){
 	engine.add.style(["spacing/spacing"]);
 	engine.plugin.spacing={
 		create:function(target,reload){
-			engine.properties.add({
+			engine.add.tab("properties").tag({
 				tag:"hr"
 			});
 
-			var label=engine.properties.add({
+			
+			var label=engine.add.tab("properties").tag({
 				tag:"label",
 				html:"Text color:",
 				class:"text-left spacing-label"
 			});
 
-			var input=engine.create.tag({
+			var input=engine.model.tag({
 				tag:"input",
 				type:"color",
 			});
@@ -25,18 +28,18 @@
 				engine.clear();
 			});
 
-			var label=engine.properties.add({
+			var label=engine.add.tab("properties").tag({
 				tag:"label",
 				html:"Align:",
 				class:"text-left spacing-label"
 			});
-			var select=engine.create.tag({
-				tag:"select",
+			var select=engine.model.tag({
+				tag:"select"
 			});
 			select.addOption("Left","text-left");
 			select.addOption("Center","text-center");
 			select.addOption("Right","text-right");
-			var classList=target.class.split(" ");
+			var classList=target.class;
 			if(classList.join("")=="") classList=[];
 			select.value="text-left"
 			if(classList.includes("text-left")) select.value="text-left";
@@ -55,17 +58,17 @@
 			});
 			label.appendChild(select);
 
-			var div=engine.properties.add({
+			var div=engine.add.tab("properties").tag({
 				tag:"div",
 				class:"grid-x grid-padding-y align-middle padding-options"
 			});
 			
-			var cell=engine.create.tag({
+			var cell=engine.model.tag({
 				tag:"div",
 				class:"cell small-3"
 			});
 
-			var a=engine.create.tag({
+			var a=engine.model.tag({
 				tag:"a",
 				html:'<i class="fal fa-lock-open-alt"></i>',
 				class:"button spacing-locker"
@@ -90,12 +93,12 @@
 			cell.appendChild(a);
 			div.appendChild(cell);
 
-			var cell=engine.create.tag({
+			var cell=engine.model.tag({
 				tag:"div",
 				class:"cell small-9"
 			});
 
-			var select=engine.create.tag({
+			var select=engine.model.tag({
 				tag:"select",
 				data:"top"
 			});
@@ -111,7 +114,7 @@
 			cell.appendChild(select);
 
 
-			var select=engine.create.tag({
+			var select=engine.model.tag({
 				tag:"select",
 				class:"spacing-select",
 				data:"left"
@@ -128,7 +131,7 @@
 			cell.appendChild(select);
 
 
-			var select=engine.create.tag({
+			var select=engine.model.tag({
 				tag:"select",
 				class:"spacing-select",
 				data:"right"
@@ -145,7 +148,7 @@
 			cell.appendChild(select);
 
 
-			var select=engine.create.tag({
+			var select=engine.model.tag({
 				tag:"select",
 				data:"bottom"
 			});
