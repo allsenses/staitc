@@ -44,6 +44,11 @@ const engine={
 					engine.show.panel.option("tools");
 				},true);
 			});
+			engine.add.iframe.script("js/what-input.min.js",function(){
+				engine.add.iframe.script("js/foundation.min.js",function(){
+					engine.iframe.$(engine.iframe.document).foundation();
+				})
+			});
 		});
 		engine.iframe.location.reload();
 		iframe[0].src="";
@@ -145,7 +150,7 @@ const engine={
 			e.parentObj=parentObj;
 			var obj=document.createElement(e.type);
 			obj.engineTarget=e;
-			obj.className=e.class;
+			obj.className=e.class.join(" ");
 			obj.alt=e.alt;
 			obj.src=e.src;
 			obj.textOptions=e.textOptions;

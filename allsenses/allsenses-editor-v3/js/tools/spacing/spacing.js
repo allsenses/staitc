@@ -2,6 +2,7 @@ import { engine } from "../../init.js";
 
 (function(){
 	engine.add.style(["spacing/spacing"]);
+	engine.add.iframe.style("js/tools/spacing/iframe.css")
 	engine.plugin.spacing={
 		create:function(target,reload){
 			engine.add.tab("properties").tag({
@@ -47,13 +48,13 @@ import { engine } from "../../init.js";
 			if(classList.includes("text-right")) select.value="text-right";
 
 			$(select).on("change",function(){
-				var classList=target.class.split(" ");
+				var classList=target.class;
 				if(classList.join("")=="") classList=[];
 				classList.remove("text-left");
 				classList.remove("text-center");
 				classList.remove("text-right");
 				classList.push(this.value);
-				target.class=classList.join(" ");
+				target.class=classList;
 				engine.clear();
 			});
 			label.appendChild(select);
@@ -186,7 +187,7 @@ import { engine } from "../../init.js";
 	}
 
 	var apply=function(target,that,reload){
-		var classList=target.class.split(" ");
+		var classList=target.class;
 		if(classList.join("")=="") classList=[];
 		for(var i=0;i<=8;i++){
 			classList.remove("pt-"+i);
@@ -208,7 +209,7 @@ import { engine } from "../../init.js";
 		if(target.padding.bottom)classList.push("pb-"+target.padding.bottom);
 		if(target.padding.left)classList.push("pl-"+target.padding.left);
 		if(target.padding.right)classList.push("pr-"+target.padding.right);
-		target.class=classList.join(" ");
+		target.class=classList;
 
 
 		reload();

@@ -17,10 +17,11 @@ import { engine } from "../../init.js";
 	function edit(){
 		var target=engine.target;
 		if(target.module=="container"){
+			engine.remove.tab("properties").content();
 			engine.plugin.spacing.create(target,edit);
-			// engine.plugin.aos.create(target,edit);
-			// engine.plugin.tooltip.create(target,edit);
-			// engine.plugin.class.create(target,edit);
+			engine.plugin.aos.create(target,edit);
+			engine.plugin.tooltip.create(target,edit);
+			engine.plugin.class.create(target,edit);
 		}
 	}
 

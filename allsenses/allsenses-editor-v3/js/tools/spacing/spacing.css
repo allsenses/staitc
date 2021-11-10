@@ -1,25 +1,30 @@
-.allsenses-editor .panel .spacing-select{
+.engine .panel .spacing-select{
 	display: inline-block;
 	width: 50%;
 }
 
-.allsenses-editor .panel .spacing-locker{
+.engine .panel .spacing-locker{
 	width: 44px;
 }
 
-.allsenses-editor .panel .spacing-label{
+.engine .panel .spacing-label{
 	display: block;
 	height: 32px;
 	line-height: 32px;
 	position: relative;
 }
 
-.allsenses-editor .panel .spacing-label input,
-.allsenses-editor .panel .spacing-label select{
+.engine .panel .spacing-label input,
+.engine .panel .spacing-label select{
 	display: inline-block;
 	width: 160px;
 	position: absolute;
 	top:0;
 	right: 0;
 	margin: 0;
+}
+
+.engine .panel .padding-options select{
+	appearance: none;
+	margin-top: 2px;
 }

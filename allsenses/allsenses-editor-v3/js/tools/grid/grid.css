@@ -1,0 +1,78 @@
+.allsenses-editor .content .grid-x{
+	padding: 1rem;
+}
+
+.allsenses-editor .panel .grid-option{
+	display: inline-block;
+	padding: .75rem 0;
+	width: calc(33.33% - 26px);
+	margin: 8px 13px;
+	border-radius: 4px;
+	color: var(--panel-text);
+	background: var(--tool-bg);
+	text-align: center;
+	cursor: pointer;
+	font-size: 14px;
+}
+
+.allsenses-editor .panel .icon{
+	height: 48px;
+	width: 48px;
+}
+
+
+.allsenses-editor .popup .grid-option{
+    display: inline-block;
+    padding: .75rem 0;
+    width: 96px;
+    margin: 11px 11px;
+    border-radius: 4px;
+    color: #ffffff;
+    -webkit-box-shadow: 0 4px 16px rgba(0,0,0,.1);
+    background: var(--tool-bg);
+    text-align: center;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.allsenses-editor .grid-option:hover{
+	opacity: .8;
+}
+
+.allsenses-editor .panel .padding-options select{
+	appearance: none;
+	margin-top:2px;
+}
+
+.icon{
+	display: inline-block;
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	vertical-align: middle;
+	height: 64px;
+	width: 64px;
+}
+
+.icon.icon-66{
+	background-image: url(6-6.svg);
+}
+
+.icon.icon-48{
+	background-image: url(4-8.svg);
+}
+
+.icon.icon-84{
+	background-image: url(8-4.svg);
+}
+
+.icon.icon-444{
+	background-image: url(4-4-4.svg);
+}
+
+.icon.icon-39{
+	background-image: url(3-9.svg);
+}
+
+.icon.icon-93{
+	background-image: url(9-3.svg);
+}

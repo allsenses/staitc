@@ -1,0 +1,33 @@
+.engine .panel .class-container{
+	border:1px solid rgba(255,255,255,.1);
+	margin-bottom: 8px;
+	border-radius: 4px;
+	overflow: hidden;
+}
+
+.engine .panel .class-container input{
+	margin:0;
+	border-radius: 0;
+}
+
+.engine .panel .class-container .element{
+	position: relative;
+	padding: 10px 8px;
+	background: rgba(0,0,0,.1);
+	border-top: 1px solid rgba(255,255,255,.1);
+	font-size: 12px;
+}
+
+.engine .panel .class-container .element a.remove{
+	position: absolute;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	width: 40px;
+	text-align: center;
+	color: rgba(255,0,0,.4);
+	background: rgba(0, 0, 0, .15);
+	display: -webkit-flex;
+	justify-content: center;
+	align-items: center;
+}

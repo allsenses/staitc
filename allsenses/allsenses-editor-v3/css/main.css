@@ -304,8 +304,8 @@ label.checkbox input:checked + span::after{
 
 .engine .button{
 	display: inline-block;
-	background: rgba(255,255,255,.05);
-	padding: .75rem 1.25rem;
+	background: rgba(255,255,255,.1);
+	padding: .85em 1em;
 	margin:.5rem 0;
 	border-radius: 4px;
 	color: var(--panel-text);
@@ -550,7 +550,110 @@ label.checkbox input:checked + span::after{
 	opacity: 0;
 }
 
+.engine input[type="color"] {
+    height: 30px;
+}
+
+.engine .panel hr {
+	border:none;
+    border-bottom: 2px solid #18212e;
+	max-width: 90rem;
+	margin: 1.25rem auto;
+}
+
+.button{
+	display: inline-block;
+	vertical-align: middle;
+	margin: 0 0 1rem 0;
+	padding: .85em 1em;
+	border: 1px solid transparent;
+	border-radius: 0;
+	-webkit-transition: background-color .25s ease-out,color .25s ease-out;
+	transition: background-color .25s ease-out,color .25s ease-out;
+	font-family: inherit;
+	font-size: .9rem;
+	-webkit-appearance: none;
+	line-height: 1;
+	text-align: center;
+	cursor: pointer;
+	background-color: #1779ba;
+	color: #fefefe;
+}
 
 .text-center{
 	text-align: center;
+}
+
+.grid-x {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-flow: row wrap;
+    flex-flow: row wrap
+}
+
+.grid-padding-y .grid-padding-y {
+    margin-top: -.625rem;
+    margin-bottom: -.625rem
+}
+
+.grid-padding-y > .cell {
+    padding-top: .625rem;
+    padding-bottom: .625rem
+}
+
+.align-middle {
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center
+}
+
+.grid-x > .small-1 {
+    width: 8.33333%
+}
+
+.grid-x > .small-2 {
+    width: 16.66667%
+}
+
+.grid-x > .small-3 {
+    width: 25%
+}
+
+.grid-x > .small-4 {
+    width: 33.33333%
+}
+
+.grid-x > .small-5 {
+    width: 41.66667%
+}
+
+.grid-x > .small-6 {
+    width: 50%
+}
+
+.grid-x > .small-7 {
+    width: 58.33333%
+}
+
+.grid-x > .small-8 {
+    width: 66.66667%
+}
+
+.grid-x > .small-9 {
+    width: 75%
+}
+
+.grid-x > .small-10 {
+    width: 83.33333%
+}
+
+.grid-x > .small-11 {
+    width: 91.66667%
+}
+
+.grid-x > .small-12 {
+    width: 100%
 }
