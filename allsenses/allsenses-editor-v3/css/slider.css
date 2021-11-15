@@ -33,6 +33,9 @@
 	outline-offset: -2px;
 }
 
+picture{
+	display: inline-block;
+}
 
 .add{
 	display: block;
@@ -74,4 +77,31 @@
 	border:2px dashed #6565ff;
 	color:#6565ff;
 	opacity: 1;
+}
+
+.edit{
+	display: none;
+	justify-content: space-between;
+	position: absolute;
+	background: #2ba6cb;
+	z-index: 10;
+}
+
+.edit.active{
+	display: -webkit-flex;
+}
+
+.edit a{
+    display: none;
+    justify-content: center;
+    align-items: center;
+    width: 32px;
+    height: 32px;
+    color: #d3d3d3;
+    background: #376fd0;
+	cursor:pointer;
+}
+
+.edit a.active{
+	display: -webkit-flex;
 }

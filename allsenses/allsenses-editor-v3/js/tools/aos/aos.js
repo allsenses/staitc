@@ -4,7 +4,7 @@ import { engine } from "../../init.js";
 	engine.add.iframe.script("aos/aos.min.js",function(){
 		engine.iframe.AOS.init();
 	});
-	engine.add.style(["aos/aos"]);
+	engine.add.iframe.style("aos/aos.css");
 	engine.plugin.aos={
 		create:function(target){
 			engine.add.tab("properties").tag({

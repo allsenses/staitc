@@ -561,6 +561,13 @@ label.checkbox input:checked + span::after{
 	margin: 1.25rem auto;
 }
 
+
+
+
+
+
+
+
 .button{
 	display: inline-block;
 	vertical-align: middle;

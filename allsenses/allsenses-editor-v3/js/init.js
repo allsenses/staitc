@@ -2,6 +2,7 @@ import { Back } from "./modules/goback.js";
 import { lang } from "./modules/lang.js";
 import { Tag } from "./modules/tag.js";
 import { Laptop, Mobile, Tablet } from "./modules/preview.js";
+import { edit } from "./modules/edit.js";
 
 
 
@@ -19,15 +20,14 @@ const engine={
 	draggable:null,
 	beforeCallback:null,
 	init:function(container,tools){
-		var editor=new Tag("div");
-		editor.className="engine";
+		var editor=new Tag("div","engine");
 		editor.innerHTML='<div class="panel active"><div class="options"></div><div class="tools"></div><div class="bar"></div><a class="panel-switch active"><i class="fal fa-angle-right"></i></a></div><div class="content active"></div><div class="popup"><form></form></div>';
 		$(container).append(editor);
 		var iframeElem=new Tag("iframe");
 		iframeElem.width="100%";
 		iframeElem.height="100%";
 		$(".engine .content").append(iframeElem);
-		
+
 		engine.iframe=$(".engine .content iframe")[0].contentWindow;
 		
 		let iframe=$(".engine .content iframe");
@@ -37,11 +37,10 @@ const engine={
 			engine.add.iframe.style("css/slider.css");
 			engine.add.iframe.style("/templates/default/css/style.css",true);
 			engine.add.iframe.script("js/jquery.js",function(){
-				engine.iframe.addEventListener("click",function(event){
-					engine.iframe.$("[data-active]").attr("data-active","false");
-					engine.target=null;
-					engine.element=null;
-					engine.show.panel.option("tools");
+				engine.iframe.document.querySelector("html").addEventListener("click",function(event){
+					if(event.target==this || event.target==engine.iframe.document.body){
+						edit.hide();
+					}
 				},true);
 			});
 			engine.add.iframe.script("js/what-input.min.js",function(){
@@ -133,14 +132,6 @@ const engine={
 		var event=new Event("engine-clear");
 		window.dispatchEvent(event);
 	},
-
-	edit:function(target,element){
-		engine.remove.tab("properties").content(true);
-		engine.target=target;
-		engine.element=element;
-		var event=new Event("engine-edit");
-		window.dispatchEvent(event);
-	},
 	
 	render:function(data,container,parentObj){
 		let id=0;
@@ -205,27 +196,27 @@ const engine={
 			}
 			
 			if(e.canFocus){
-				$(obj).on("click",function(){
-					engine.edit(e,obj);
-				});
+				obj.addEventListener("click",function(){
+					edit(e,obj);
+				},true);
 				$(obj).on("mouseover",function(event){
 					event.stopPropagation();
-					$("[data-hover]").attr("data-hover","false");
+					engine.iframe.$("[data-hover]").attr("data-hover","false");
 					$(this).attr("data-hover","true");
 				});
 				$(obj).on("mouseout",function(event){
 					$(this).attr("data-hover","false");
 				});
-				$(obj).on("click",function(){
-					$("[data-active]").attr("data-active","false");
+				obj.addEventListener("click",function(){
+					engine.iframe.$("[data-active]").attr("data-active","false");
 					$(this).attr("data-active","true");
-				});
+				},true);
 				obj.addEventListener("dragover",function(){
-					$("[data-hover]").attr("data-hover","false");
+					engine.iframe.$("[data-hover]").attr("data-hover","false");
 					$(this).attr("data-hover","true");
 				},true);
 				obj.addEventListener("dragleave",function(){
-					$("[data-hover]").attr("data-hover","false");
+					engine.iframe.$("[data-hover]").attr("data-hover","false");
 				},true);
 			}
 
@@ -262,6 +253,19 @@ const engine={
 				$(this).removeClass("active");
 			});
 			engine.iframe.document.body.append(drop);
+
+			var editBar=new Tag("div","edit");
+			editBar.html('<a class="drag fal fa-arrows" draggable="true"></a><a class="edit-up fal fa-angle-up"></a><a class="edit-down fal fa-angle-down"></a><a class="clone fal fa-copy"></a><a class="remove fal fa-trash"></a>');
+			$(editBar).find(".drag").on("drag",edit.drag);
+			$(editBar).find(".drag").on("dragend",function(){
+				engine.iframe.$(engine.element).attr("data-disabled","false");
+				engine.draggable=null;
+			})
+			$(editBar).find(".edit-up").on("click",edit.up);
+			$(editBar).find(".edit-down").on("click",edit.down);
+			$(editBar).find(".clone").on("click",edit.clone);
+			$(editBar).find(".remove").on("click",edit.remove);
+			engine.iframe.document.body.append(editBar);
 		}
 	},
 
@@ -462,8 +466,12 @@ const engine={
 				a.innerHTML='<i class="'+icon+'"></i>'+name;
 				a.draggable=true;
 				$(a).on("drag",function(){
+					engine.iframe.$(".add").addClass("draggable");
 					engine.draggable=dragClass;
 					engine.beforeCallback=beforeCallback || null;
+				});
+				$(a).on("dragend",function(){
+					engine.iframe.$(".add").removeClass("draggable");
 				});
 
 				if($(self.target).find('[data-type="'+type+'"')[0]){
@@ -556,7 +564,6 @@ const engine={
 							parent.push(new engine.draggable());
 						}
 					}catch(err){
-						console.log(err);
 						var target=engine.draggable;
 						target.parent.splice(target.id,1);
 						if(typeof(id)=="number"){
