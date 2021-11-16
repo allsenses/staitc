@@ -1,3 +1,5 @@
+import { engine } from "../../init.js";
+
 (function(){
 	engine.add.style(["grid/grid"]);
 	var cell=function(className,content){
@@ -16,7 +18,7 @@
 			this.lockClass.push("medium-order-"+i);
 			this.lockClass.push("large-order-"+i);
 		}
-		this.class=className || "cell large-4";
+		this.class.push(className || "cell","large-4");
 		this.content=content || [];
 		this.editable=false;
 		this.container=true;
@@ -27,7 +29,7 @@
 		engine.model.tool.call(this);
 		this.module="grid";
 		this.type="div";
-		this.class="grid-x grid-padding-x grid-padding-y";
+		this.class.push("grid-x","grid-padding-x","grid-padding-y");
 		this.content=[
 			new cell(),
 			new cell(),
@@ -40,7 +42,7 @@
 	}
 
 	$(window).on("engine-edit",function(){
-		var target=engine.edit.target;
+		var target=engine.target;
 		if(target.module=="grid"){
 			align(target);
 
@@ -51,7 +53,7 @@
 			addTemplate(target,"3,9");
 			addTemplate(target,"9,3");
 
-			var input=engine.properties.add({
+			var input=engine.add.tab("properties").tag({
 				tag:"input",
 				type:"text",
 				placeholder:"4,4,4",
@@ -76,26 +78,27 @@
 		var target=engine.edit.target;
 		if(target.module=="cell"){
 			target.parent.forEach(function(e){
-				var classList=e.class.split(" ");
+				var classList=e.class;
 				for(var i=1;i<=6;i++){
 					classList.remove("small-order-"+i);
 					classList.remove("medium-order-"+i);
 					classList.remove("large-order-"+i);
 				}
-				e.class=classList.join(" ");
+				e.class=classList;
 			});
 			edit();
 		}
 	});
 
 	var align=function(target){
-		var label=engine.properties.add({
+		var label=engine.add.tab("properties").tag({
 			tag:"label",
 			class:"spacing-label",
 			html:"Vertical align:"
 		});
-
-		var select=engine.create.tag({
+		
+		
+		var select=engine.model.tag({
 			tag:"select",
 		});
 
@@ -104,18 +107,18 @@
 		select.addOption("Middle","align-middle");
 		select.addOption("Bottom","align-bottom");
 
-		var classList=target.class.split(" ");
+		var classList=target.class;
 		if(classList.includes("align-top")) select.value="align-top";
 		if(classList.includes("align-middle")) select.value="align-middle";
 		if(classList.includes("align-bottom")) select.value="align-bottom";
 
 		$(select).on("change",function(){
-			var classList=target.class.split(" ");
+			var classList=target.class;
 			classList.remove("align-top");
 			classList.remove("align-middle");
 			classList.remove("align-bottom");
 			classList.push(this.value);
-			target.class=classList.join(" ");
+			target.class=classList;
 			engine.clear();
 		});
 
@@ -125,7 +128,7 @@
 	var addTemplate=function(target,cols){
 		var icon=cols.split(",").join("");
 		var title=cols.split(",").join("-");
-		var a=engine.properties.add({
+		var a=engine.add.tab("properties").tag({
 			tag:"a",
 			class:"grid-option",
 			html:'<i class="icon icon-'+icon+'"></i><br>'+title
@@ -145,7 +148,7 @@
 			createSize(target,"medium");
 			createSize(target,"large");
 
-			engine.properties.add({
+			engine.add.tab("properties").tag({
 				tag:"hr"
 			})
 
@@ -161,12 +164,12 @@
 	}
 
 	var createSize=function(target,size){
-		var label=engine.properties.add({
+		var label=engine.add.tab("properties").tag({
 			tag:"label",
 			class:"spacing-label",
 			html:size.charAt(0).toUpperCase()+size.slice(1)+" size:"
 		});
-		var select=engine.create.tag({
+		var select=engine.model.tag({
 			tag:"select"
 		});
 		select.addOption("None","none");
@@ -174,7 +177,7 @@
 			select.addOption(i,i);
 		}
 		
-		var classList=target.class.split(" ");
+		var classList=target.class;
 		for(var i=1;i<=12;i++){
 			if(classList.includes(size+"-"+i)){
 				select.value=i;
@@ -182,7 +185,7 @@
 		}
 
 		$(select).on("change",function(){
-			var classList=target.class.split(" ");
+			var classList=target.class;
 			for(var i=1;i<=12;i++){
 				classList.remove(size+"-"+i);
 			}
@@ -196,12 +199,12 @@
 	}
 
 	var ordering=function(target,size){
-		var label=engine.properties.add({
+		var label=engine.add.tab("properties").tag({
 			tag:"label",
 			class:"spacing-label",
 			html:size.charAt(0).toUpperCase()+size.slice(1)+" order:"
 		});
-		var select=engine.create.tag({
+		var select=engine.model.tag({
 			tag:"select"
 		});
 		select.addOption("None","none");
@@ -209,7 +212,7 @@
 			select.addOption(i,i);
 		}
 		
-		var classList=target.class.split(" ");
+		var classList=target.class;
 		for(var i=1;i<=6;i++){
 			if(classList.includes(size+"-order-"+i)){
 				select.value=i;
@@ -217,14 +220,14 @@
 		}
 
 		$(select).on("change",function(){
-			var classList=target.class.split(" ");
+			var classList=target.class;
 			for(var i=1;i<=6;i++){
 				classList.remove(size+"-order-"+i);
 			}
 			if(this.value!="none"){
 				classList.push(size+"-order-"+this.value);
 			}
-			target.class=classList.join(" ");
+			target.class=classList;
 			engine.clear();
 		});
 		label.appendChild(select);
@@ -232,68 +235,68 @@
 
 
 	var options=function(target){
-		var form=engine.popup.create("Grid type");
-		var a=engine.popup.add({
+		var form=engine.add.popup("Grid type");
+		var a=form.tag({
 			tag:"a",
 			class:"grid-option",
 			html:'<i class="icon icon-66"></i><br>6-6'
 		});
 		$(a).on("click",function(){
 			changeCells(target,"6,6");
-			engine.popup.hide();
+			engine.hide.popup();
 		});
 
-		var a=engine.popup.add({
+		var a=form.tag({
 			tag:"a",
 			class:"grid-option",
 			html:'<i class="icon icon-444"></i><br>4-4-4'
 		});
 		$(a).on("click",function(){
 			changeCells(target,"4,4,4");
-			engine.popup.hide();
+			engine.hide.popup();
 		});
 		
-		var a=engine.popup.add({
+		var a=form.tag({
 			tag:"a",
 			class:"grid-option",
 			html:'<i class="icon icon-48"></i><br>4-8'
 		});
 		$(a).on("click",function(){
 			changeCells(target,"4,8");
-			engine.popup.hide();
+			engine.hide.popup();
 		});
 
-		var a=engine.popup.add({
+		var a=form.tag({
 			tag:"a",
 			class:"grid-option",
 			html:'<i class="icon icon-84"></i><br>8-4'
 		});
 		$(a).on("click",function(){
 			changeCells(target,"8,4");
-			engine.popup.hide();
+			engine.hide.popup();
 		});
 
-		var a=engine.popup.add({
+		var a=form.tag({
 			tag:"a",
 			class:"grid-option",
 			html:'<i class="icon icon-39"></i><br>3-9'
 		});
 		$(a).on("click",function(){
 			changeCells(target,"3,9");
-			engine.popup.hide();
+			engine.hide.popup();
 		});
 
-		var a=engine.popup.add({
+		var a=form.tag({
 			tag:"a",
 			class:"grid-option",
 			html:'<i class="icon icon-93"></i><br>9-3'
 		});
 		$(a).on("click",function(){
 			changeCells(target,"9,3");
-			engine.popup.hide();
+			engine.hide.popup();
 		});
 
-		var input=engine.popup.add({
+		var input=form.tag({
 			tag:"input",
 			type:"text",
 			placeholder:"4,4,4",
@@ -333,6 +336,6 @@
 		}
 		engine.clear();
 	}
-
-	engine.add.tool("Basic","fal fa-table","Grid",grid,options);
+	
+	engine.add.tab("tools").tool("Basic","fal fa-table","Grid",grid,options);
 })();

@@ -1,27 +1,27 @@
-.allsenses-editor .content .grid-x{
+.engine .grid-x{
 	padding: 1rem;
 }
 
-.allsenses-editor .panel .grid-option{
+.engine .grid-option{
 	display: inline-block;
 	padding: .75rem 0;
 	width: calc(33.33% - 26px);
 	margin: 8px 13px;
 	border-radius: 4px;
 	color: var(--panel-text);
-	background: var(--tool-bg);
+	background: var(--panel-object);
 	text-align: center;
 	cursor: pointer;
 	font-size: 14px;
 }
 
-.allsenses-editor .panel .icon{
+.engine .icon{
 	height: 48px;
 	width: 48px;
 }
 
 
-.allsenses-editor .popup .grid-option{
+.engine .popup .grid-option{
     display: inline-block;
     padding: .75rem 0;
     width: 96px;
@@ -29,17 +29,17 @@
     border-radius: 4px;
     color: #ffffff;
     -webkit-box-shadow: 0 4px 16px rgba(0,0,0,.1);
-    background: var(--tool-bg);
+    background: var(--panel-object);
     text-align: center;
     cursor: pointer;
     font-size: 14px;
 }
 
-.allsenses-editor .grid-option:hover{
+.engine .grid-option:hover{
 	opacity: .8;
 }
 
-.allsenses-editor .panel .padding-options select{
+.engine .padding-options select{
 	appearance: none;
 	margin-top:2px;
 }
