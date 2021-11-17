@@ -18,7 +18,11 @@ import { engine } from "../../init.js";
 			this.lockClass.push("medium-order-"+i);
 			this.lockClass.push("large-order-"+i);
 		}
-		this.class.push(className || "cell","large-4");
+		if(className){
+			this.class=className;
+		}else{
+			this.class.push("cell","large-4");
+		}
 		this.content=content || [];
 		this.editable=false;
 		this.container=true;
@@ -140,9 +144,9 @@ import { engine } from "../../init.js";
 
 
 	var edit=function(){
-		var target=engine.edit.target;
+		var target=engine.target;
 		if(target.module=="cell"){
-			engine.properties.clear();
+			engine.remove.tab("properties").content();
 			
 			createSize(target,"small");
 			createSize(target,"medium");
@@ -312,7 +316,6 @@ import { engine } from "../../init.js";
 	}
 
 	var changeCells=function(target,value){
-		// TODO: Suma 12 nie może przekroczyć
 		var defaultSum=36;
 		var cells=value.split(",");
 		cells.splice(defaultSum,cells.length);
@@ -328,9 +331,9 @@ import { engine } from "../../init.js";
 			sum+=Number(e);
 			if(sum<=defaultSum){
 				if(i==0){
-					target.content.push(new cell("cell large-"+e,content));
+					target.content.push(new cell(["cell","large-"+e],content));
 				}else{
-					target.content.push(new cell("cell large-"+e));
+					target.content.push(new cell(["cell","large-"+e]));
 				}
 			}
 		}
