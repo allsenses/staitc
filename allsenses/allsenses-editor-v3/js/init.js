@@ -124,6 +124,17 @@ const engine={
 		localStorage.setItem("allsenses-editor",JSON.stringify(engine.settings));
 	},
 	
+	parents:function(data){
+		data=data || engine.data;
+		data.forEach(function(e){
+			e.parent=data;
+			e.parentObj=null;
+			if(e.container){
+				e.parentObj=e;
+			}
+			engine.parents(e.content);
+		})
+	},
 	
 	clear:function(){
 		engine.iframe.document.body.innerHTML="";

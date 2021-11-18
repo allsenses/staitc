@@ -1,7 +1,8 @@
 import { engine } from "../../init.js";
+import { lang } from "../../modules/lang.js";
 
 (function(){
-	engine.add.style(["notification/notification"]);
+	engine.add.style(["notification/notification.css"]);
 
 	var div=document.createElement("div");
 	div.className="notification";
