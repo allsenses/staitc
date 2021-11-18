@@ -79,7 +79,7 @@ import { engine } from "../../init.js";
 
 
 	$(window).on("engine-move",function(event){
-		var target=engine.edit.target;
+		var target=engine.target;
 		if(target.module=="cell"){
 			target.parent.forEach(function(e){
 				var classList=e.class;
@@ -196,7 +196,7 @@ import { engine } from "../../init.js";
 			if(this.value!="none"){
 				classList.push(size+"-"+this.value);
 			}
-			target.class=classList.join(" ");
+			target.class=classList;
 			engine.clear();
 		});
 		label.appendChild(select);

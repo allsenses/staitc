@@ -1,3 +1,5 @@
+import { engine } from "../../init.js";
+
 (function(){
 	var heading=function(){
 		engine.model.tool.call(this);
@@ -5,22 +7,21 @@
 		this.module="heading"
 		this.type="h1";
 		this.placeholder="Sample text...";
-		this.class="";
 		this.canDrag=true;
 	}
 
 	
 	var edit=function(){
-		var target=engine.edit.target;
+		var target=engine.target;
 		if(target.module=="heading"){
-			engine.properties.clear();
-			var label=engine.properties.add({
+			engine.remove.tab("properties").content();
+			var label=engine.add.tab("properties").tag({
 				tag:"label",
 				class:"spacing-label",
 				html:"Heading:"
 			});
 			
-			var select=engine.create.tag({
+			var select=engine.model.tag({
 				tag:"select",
 			});
 			for(var i=1;i<=6;i++){
@@ -45,5 +46,5 @@
 	$(window).on("engine-edit",edit);
 
 
-	engine.add.tool("Basic","fal fa-heading","Heading",heading);
+	engine.add.tab("tools").tool("Basic","fal fa-heading","Heading",heading);
 })()

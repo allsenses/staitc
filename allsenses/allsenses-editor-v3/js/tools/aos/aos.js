@@ -1,10 +1,10 @@
 import { engine } from "../../init.js";
 
 (function(){
-	engine.add.iframe.script("aos/aos.min.js",function(){
+	engine.add.iframe.script("js/tools/aos/aos.min.js",function(){
 		engine.iframe.AOS.init();
 	});
-	engine.add.iframe.style("aos/aos.css");
+	engine.add.iframe.style("js/tools/aos/aos.css");
 	engine.plugin.aos={
 		create:function(target){
 			engine.add.tab("properties").tag({
@@ -175,6 +175,6 @@ import { engine } from "../../init.js";
 
 
 	$(window).on("engine-clear",function(){
-		//engine.iframe.AOS.init();
+		engine.iframe.AOS.init();
 	});
 })();

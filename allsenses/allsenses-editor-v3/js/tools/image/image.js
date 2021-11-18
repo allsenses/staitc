@@ -91,7 +91,7 @@ import { engine } from "../../init.js";
 				}
 			});
 
-			var input=engine.properties.add({
+			var input=engine.add.tab("properties").tag({
 				tag:"input",
 				placeholder:"Alt text...",
 				value: target.content[2].alt,

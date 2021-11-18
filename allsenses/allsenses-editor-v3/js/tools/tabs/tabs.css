@@ -1,0 +1,20 @@
+.engine .panel .tabs-manager div{
+	position: relative;
+	border:1px solid rgba(255,255,255,.1);
+	background:var(--panel-input);
+}
+
+.engine .panel .tabs-manager div input{
+	width: 90%;
+	margin: 0;
+	vertical-align: middle;
+}
+
+.engine .panel .tabs-manager div a{
+	display: inline-block;
+	vertical-align: middle;
+	width: 10%;
+	height: 100%;
+	text-align: center;
+	color:rgba(255, 0, 0,.4);
+}

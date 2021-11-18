@@ -1,0 +1,13 @@
+.tabs-panel{
+	display: none;
+}
+
+.tabs-panel.is-active{
+	display: block;
+}
+
+.tabs,
+.tabs-title,
+.tabs-content{
+	padding: 0;
+}

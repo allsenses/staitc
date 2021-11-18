@@ -1,0 +1,58 @@
+.allsenses-editor .contextmenu{
+	position: fixed;
+	top:0;
+	left:0;
+	border: 1px solid #333;
+	background: #222;
+	-webkit-box-shadow:0 2px 8px rgba(0,0,0,.25);
+	font-size:14px;
+	border-radius: 0 8px 8px 8px;
+	overflow: hidden;
+
+	visibility: hidden;
+	opacity: 0;
+	-webkit-transition:0s;
+	-webkit-transform-origin: top left;
+	-webkit-transform:scale(.8,.8);
+	z-index: 5;
+}
+
+.allsenses-editor .contextmenu.active{
+	display: inline-block;
+
+	visibility: visible;
+	opacity: 1;
+	-webkit-transform: scale(1,1);
+	-webkit-transition:opacity .2s,transform .2s;
+}
+
+.allsenses-editor .contextmenu a{
+	display: block;
+	padding-right: 8px;
+	cursor: default;
+	color:#aaa;
+}
+
+.allsenses-editor .contextmenu a.border{
+	border-top:1px solid #444;
+}
+
+.allsenses-editor .contextmenu a:first-child{
+	border:none;
+}
+
+.allsenses-editor .contextmenu a:hover{
+	background: rgba(255,255,255,.05);
+}
+
+.allsenses-editor .contextmenu i{
+	vertical-align: middle;
+	height: 28px;
+	width: 28px;
+	line-height: 28px;
+	text-align: center;
+}
+
+.allsenses-editor .contextmenu span{
+	vertical-align: middle;
+}

@@ -1,0 +1,24 @@
+@import url(owl/owl.carousel.min.css);
+@import url(owl/owl.theme.default.min.css);
+
+.owl-carousel{
+	height: 50vh;
+	overflow: hidden;
+}
+
+.allsenses-editor .panel .slider-select{
+	display: block;
+	height: 32px;
+	line-height: 32px;
+	position: relative;
+}
+
+.allsenses-editor .panel .slider-select input,
+.allsenses-editor .panel .slider-select select{
+	display: inline-block;
+	width: 160px;
+	position: absolute;
+	top:0;
+	right: 0;
+	margin: 0;
+}
