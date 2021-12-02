@@ -1,4 +1,4 @@
-.allsenses-editor .notification{
+.engine .notification{
 	position: fixed;
 	bottom: 0;
 	right:0;
@@ -17,7 +17,7 @@
 	z-index: 105;
 }
 
-.allsenses-editor .notification::after{
+.engine .notification::after{
 	content:"";
 	position: absolute;
 	bottom: 0;
@@ -27,13 +27,13 @@
 	height: 4px;
 }
 
-.allsenses-editor .notification.active{
+.engine .notification.active{
 	-webkit-transform:translateY(0%);
 	visibility: visible;
 	opacity: 1;
 }
 
-.allsenses-editor .notification div{
+.engine .notification div{
 	position: absolute;
 	top:50%;
 	-webkit-transform:translateY(-50%);
@@ -41,7 +41,7 @@
 	right: 0;
 }
 
-.allsenses-editor .notification div i{
+.engine .notification div i{
 	display: inline-block;
 	width: 32px;
 	height: 32px;
@@ -54,7 +54,7 @@
 	margin: 0 20px;
 }
 
-.allsenses-editor .notification div span{
+.engine .notification div span{
 	display: inline-block;
 	width: 75%;
 	vertical-align: middle;
